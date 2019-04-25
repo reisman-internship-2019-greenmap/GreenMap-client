@@ -3,10 +3,9 @@ react-native:
   - "stable"
 cache:
   directories:
-    - reactions
+    - node_modules
 script:
   - npm test
-  - npm run build
   - npm run lint
 on:
   branch: master
