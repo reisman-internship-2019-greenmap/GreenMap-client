@@ -1,5 +1,3 @@
-# App
+### Has an animated splash screen
 
-### Repo needs to be setup properly
-
-### Code Pertaining to our App (starting with Android) will be uploaded here. 
+Made with expo, working on an Android build!
