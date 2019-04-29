@@ -1,3 +1,3 @@
 ### Has an animated splash screen
 
-Made with expo, working on an Android build!
+To run, install expo CLI on your computer and the expo client app on your phone. See https://expo.io/learn.
