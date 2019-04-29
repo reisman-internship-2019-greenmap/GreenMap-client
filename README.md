@@ -1,15 +1,15 @@
 # README
 
 ## App Installation Process
-1. Download the code from github and extract it into a repository.
-2. Do the following using (https://expo.io/learn):
-3. install expo CLI on your computer
-4. install expo client app on your phone.
-5. cd to the directory with the app from github using node.js terminal (should either have a separate one (Windows) or be able to switch      into it by typing something into your terminal)
-6. type "npm install"
-7. type expo start
-8. run the app on your phone
-9. scan QR code and run Greenmap!
+Download the code from github and extract it into a repository.
+Then do the following using (https://expo.io/learn):
+1. install expo CLI on your computer
+2. install expo client app on your phone.
+3. cd to the directory with the app from github using node.js terminal (should either have a separate one (Windows) or be able to switch into it by typing something into your terminal)
+4. type "npm install"
+5. type expo start
+6. run the app on your phone
+7. scan QR code and run Greenmap!
 
 ## Latest updates:
 ### Main Screen Prototype
