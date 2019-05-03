@@ -18,12 +18,10 @@ Then do the following using (https://expo.io/learn):
 
 Some mocks of the UI can be found below:
 
-Link: https://wireframepro.mockflow.com/view/Mdf63e816b66eb76a30b58238a3a3abd91556497828194
-
-![LauraMockUp](https://user-images.githubusercontent.com/47276506/56872875-1ff3de00-6a04-11e9-8209-02fb31a26af9.png)
+![AdobeXD20190503175329](https://user-images.githubusercontent.com/47276506/57165682-30260780-6dce-11e9-8c2b-9ad001839f44.gif)
 
 ### Splash screen:
 
-#### The gif has been made but it does not work on Android and needs better resolution
-=======
+#### We are working on our identity design and will have a logo and splash screen ready in the near future
+===========================================================================================================
 
