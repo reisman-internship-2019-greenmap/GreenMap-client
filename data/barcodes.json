@@ -1,0 +1,74 @@
+{
+    "scanResults": [
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400306452983"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400302169878"
+        },
+
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400005480973"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400315509531"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400312888066"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400307102702"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400316114802"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400313824339"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400300701278"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400302169878"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400304524200"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400313557787"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0778380049512"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400302169878"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0076308003579"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0400302169878"
+        },
+        {
+            "type": "org.gs1.EAN-13",
+            "data": "0075877000880"
+        }
+    ]
+}
+
