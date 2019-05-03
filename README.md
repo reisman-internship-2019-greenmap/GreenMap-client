@@ -1,5 +1,7 @@
 # README
 
+The GreenMap app enables you to scan a barcode and learn about who makes the most eco friendly products of that kind. For example, if you walked into a smartphone store and scanner the barcode of a smartphone, we will tell you which smartphone manufactuers make the most eco friendly smartphones. The app is currently in early stages of development. 
+
 ## App Installation Process
 Download the code from github and extract it into a repository.
 Then do the following using (https://expo.io/learn):
@@ -14,9 +16,7 @@ Then do the following using (https://expo.io/learn):
 ## Latest updates:
 ### Main Screen Prototype
 
-This link should take you to a Mockflow prototype I made. Image is below.
-I'm sure others have been working on their ideas so this is just an example of
-something we could do!
+Some mocks of the UI can be found below:
 
 Link: https://wireframepro.mockflow.com/view/Mdf63e816b66eb76a30b58238a3a3abd91556497828194
 
@@ -24,6 +24,6 @@ Link: https://wireframepro.mockflow.com/view/Mdf63e816b66eb76a30b58238a3a3abd915
 
 ### Splash screen:
 
-The gif has been made but it does not work on Android and needs better resolution
+#### The gif has been made but it does not work on Android and needs better resolution
 =======
 
