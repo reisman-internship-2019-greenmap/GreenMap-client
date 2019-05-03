@@ -22,6 +22,7 @@ Some mocks of the UI can be found below:
 
 ### Splash screen:
 
-#### We are working on our identity design and will have a logo and splash screen ready in the near future
-===========================================================================================================
+#### We are working on our identity design and will have a logo and splash screen ready in the near future. 
+#### The three dots in the mock-up preview is just a placeholder for our logo and does not reflect the final
+#### design
 
