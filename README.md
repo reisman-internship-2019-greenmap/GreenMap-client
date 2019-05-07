@@ -18,11 +18,11 @@ Then do the following using (https://expo.io/learn):
 
 Some mocks of the UI can be found below:
 
-![AdobeXD20190503175329](https://user-images.githubusercontent.com/47276506/57165682-30260780-6dce-11e9-8c2b-9ad001839f44.gif)
+![LauraMockUp2](https://user-images.githubusercontent.com/47276506/57337815-49e28a00-7101-11e9-8108-21920d06a56e.gif)
 
-### Splash screen:
+### Coming soon:
 
-#### We are working on our identity design and will have a logo and splash screen ready in the near future. 
-#### The three dots in the mock-up preview is just a placeholder for our logo and does not reflect the final
-#### design
+We are working on our identity design and will have a logo and splash screen ready in the near future. The three dots in the mock-up preview is just a placeholder for our logo and does not reflect the final
+
+The camera flip may be replaced with something more functional to our app as it continues to be developed.
 
