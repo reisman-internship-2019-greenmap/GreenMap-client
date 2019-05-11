@@ -8,4 +8,7 @@ export default class App extends Component {
     )} //end render
 } //end App
 
-
+//TODO: implement stack naviagtion
+//Write dummy response screen
+//See if you can navigate to that screen upon receiving a response from the server
+//Need to pass response props from Scanner --> App --> Results
