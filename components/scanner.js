@@ -11,6 +11,7 @@ export default class Scanner extends Component {
             barCodeData: null,
             fontLoaded: false,
             type: BarCodeScanner.Constants.Type.back,
+            url: 'URL-that-the-express-server-is-running-on',
         };
     } 
    
@@ -45,6 +46,13 @@ action is performed. Otherwise the data is processed*/
     await this._delay(500);
     if (this.state.barCodeData == scan.data) return;
     this.setState({barCodeData: scan.data});
+
+    //display loading animation
+
+    /*fetch(this.state.url + 'string of barcode data')
+        .then(navigate to results page)
+    */
+        
     alert(`${this.state.barCodeData}`);
   }
 
