@@ -12,8 +12,8 @@ This branch is being used to test the app's interaction with the server. Current
 7. Run `expo start` to start the dev server
 8. Proceed as with a normal Expo app (see https://expo.io/learn if you've never used Expo before)
 
-NOTE: The URL in scannerController is hardcoded with an IP address. It will always run on port 3000,
-but you may need to change the IP address to match your machine.
+<b>NOTE: The URL in components/scannerController (line 49) is hardcoded with an IP address. It will always run on port 3000,
+but you may need to change the IP address to match your machine. </b>
 
 ### Current issues:
 
