@@ -1,0 +1,15 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "dummy server for Greenmap backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lee Penney",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
