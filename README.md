@@ -17,4 +17,4 @@ but you may need to change the IP address to match your machine. </b>
 
 ### Current issues:
 
-The app sends the request to the server, but the request it is not fufilled (a timeout function internal to the fetch API throws an exception). This may be security related or something specific to iOS. This is currently being investigated.
+The app sends the request to the server, but the request it is not fufilled (a timeout function internal to the fetch API throws an exception). If sucessful, a message will be logged to the console. The problem may be security related or something specific to iOS. This is currently being investigated.
