@@ -18,5 +18,5 @@ but you may need to change the IP address to match your machine. </b>
 ### Current issues:
 The app sends the request to the server, but the request it is not fufilled (a timeout function internal to the fetch API throws an exception). If sucessful, a message will be logged to the console. The problem may be security related or something specific to iOS. This is currently being investigated.
 
-UPDATE:
-I ported server repo into the "backend folder" since their server instance accounts for cors. This didn't fix the issue described above, but we know that the client is able to talk to live servers (e.g. http://example.com/movies.json) using the fetch API.
+<b>UPDATE</b>:
+I ported server repo into the "backend" folder since their server instance accounts for cors. This didn't fix the issue described above, but we know that the client is able to talk to live servers (e.g. http://example.com/movies.json) using the fetch API.
