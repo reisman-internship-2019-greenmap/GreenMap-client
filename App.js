@@ -1,14 +1,26 @@
-import React, { Component } from 'react';
-import Scanner from './components/scanner';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
 
-export default class App extends Component {
-  render() {
-      return (
-          <Scanner />
-    )} //end render
-} //end App
+import ScannerController from './components/scannerController';
+import ResultScreen from './components/resultsScreen';
+import LandingScreen from './components/landingScreen';
 
-//TODO: implement stack naviagtion
-//Write dummy response screen
-//See if you can navigate to that screen upon receiving a response from the server
-//Need to pass response props from Scanner --> App --> Results
+
+/*TODO: 
+ - implement stack naviagtion
+     - set up routes
+     - set up navigation flow
+ - implement redux
+ */
+
+ const navigator = createStackNavigator ({
+     Landing: LandingScreen,
+     Scanner: ScannerController,
+     Results: ResultScreen,
+    },
+    {
+        initialRouteName: "Landing",
+    }
+);
+
+ export default createAppContainer(navigator);
+
