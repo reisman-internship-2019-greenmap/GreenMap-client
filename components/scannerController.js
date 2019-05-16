@@ -46,7 +46,8 @@ action is performed. Otherwise the data is processed*/
     if (this.state.barCodeData == scan.data) return;
     this.setState({barCodeData: scan.data});
 
-    fetch('http://192.168.0.31:3000')
+    //TODO - get url for the actual server and send data in the request
+    fetch('http://example.com/movies.json')
         .then(() => console.log('GET request was made'))
         .catch((error) => console.log(error))
         
