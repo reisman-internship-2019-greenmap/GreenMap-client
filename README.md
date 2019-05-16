@@ -13,4 +13,4 @@ Branched off of #28, this branch is being used to introduce basic functionality 
 NOTE: The "backend" folder is currently not in use because we are having trouble interacting with a locally running server. We do know that the app can interact with a live server (e.g. http://example.com/movies.json).  When our server goes live rather than local we expect less issues.
 
 ### Current progress:
-a basic stackNavigator has been implemented with routes, but no flow has been set up yet.
+Starting to implement a basic navigation flow and added global styles. 
