@@ -1,8 +1,9 @@
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 
-import ScannerController from './components/scannerController';
-import ResultScreen from './components/resultsScreen';
-import LandingScreen from './components/landingScreen';
+import ScannerController from './components/controllers/scannerController';
+import ResultScreen from './components/screens/resultsScreen';
+import LandingScreen from './components/screens/landingScreen';
+import FormScreen from './components/screens/formScreen'
 
 
 /*TODO: 
@@ -16,9 +17,10 @@ import LandingScreen from './components/landingScreen';
      Landing: LandingScreen,
      Scanner: ScannerController,
      Results: ResultScreen,
+     Form: FormScreen,
     },
     {
-        initialRouteName: "Landing",
+        initialRouteName: "Scanner",
     }
 );
 
