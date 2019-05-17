@@ -1,74 +1,84 @@
 {
     "scanResults": [
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400306452983"
+            "barcode": "8152210266539",
+            "brand": "Arcade1Up",
+            "productType": "Game console"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400302169878"
+            "barcode": "0752752956141",
+            "brand": "Orbital",
+            "productType": "TV Wall Mount"
         },
-
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400005480973"
+            "barcode": "0058465803636",
+            "brand": "Curtis International",
+            "productType": "HD Television"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400315509531"
+            "barcode": "0047532910384",
+            "brand": "SDI Technologies",
+            "productType": "iHome"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400312888066"
+            "barcode": "0058465807511",
+            "brand": "Sylvania",
+            "productType": "Digital clock"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400307102702"
+            "barcode": "0628915746341",
+            "brand": "Onn",
+            "productType": "CD player"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400316114802"
+            "barcode": "0041333001517",
+            "brand": "Duracell",
+            "productType": "Batteries"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400313824339"
+            "barcode": "0039800079305",
+            "brand": "Energizer",
+            "productType": "Batteries"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400300701278"
+            "barcode": "0628915746273",
+            "brand": "Onn",
+            "productType": "Tablet case"
         },
-        {
-            "type": "org.gs1.EAN-13",
-            "data": "0400302169878"
+        { 
+            "type": "org.iso.Code128",
+            "barcode": "5789016093014705",
+            "brand": "Sony",
+            "productType": "Sound bar"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400304524200"
+            "barcode": "0841351151221",
+            "brand": "Tzumi",
+            "productType": "VR glasses"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0400313557787"
+            "barcode": "0013803309577",
+            "brand": "Canon",
+            "productType": "printer"
         },
-        {
+        { 
             "type": "org.gs1.EAN-13",
-            "data": "0778380049512"
-        },
-        {
-            "type": "org.gs1.EAN-13",
-            "data": "0400302169878"
-        },
-        {
-            "type": "org.gs1.EAN-13",
-            "data": "0076308003579"
-        },
-        {
-            "type": "org.gs1.EAN-13",
-            "data": "0400302169878"
-        },
-        {
-            "type": "org.gs1.EAN-13",
-            "data": "0075877000880"
-        }
+            "barcode": "0886111601387",
+            "brand": "HP",
+            "productType": "ink cartridge"
+        }    
+            
     ]
 }
 
