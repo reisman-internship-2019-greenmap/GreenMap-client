@@ -1,28 +1,40 @@
+//import from node_modules
+import React, {Component} from 'react';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 
-import ScannerController from './components/controllers/scannerController';
-import ResultScreen from './components/screens/resultsScreen';
-import LandingScreen from './components/screens/landingScreen';
-import FormScreen from './components/screens/formScreen'
+//redux stuff
+import store from './src/redux/store/store';
+import {Provider} from 'react-redux'
+
+import ScannerContainer from './src/containers/scannerContainer';
+import ResultsContainer from './src/containers/resultContainer';
 
 
-/*TODO: 
- - implement stack naviagtion
-     - set up routes
-     - set up navigation flow
- - implement redux
- */
 
- const navigator = createStackNavigator ({
-     Landing: LandingScreen,
-     Scanner: ScannerController,
-     Results: ResultScreen,
-     Form: FormScreen,
+//set up navigation
+let RootStack = createStackNavigator ({
+     ScannerScreen: { 
+         screen: ScannerContainer
+        },
+    ResultsScreen: {
+        screen: ResultsContainer
+        }
     },
+
     {
-        initialRouteName: "Scanner",
+        initialRouteName: "ScannerScreen",
     }
 );
 
- export default createAppContainer(navigator);
+let Navigator = createAppContainer(RootStack);
+
+export default class App extends Component {
+    render() {
+        return (
+            <Provider store={store}>
+                <Navigator />
+            </Provider>  
+        )
+    }
+}
 
