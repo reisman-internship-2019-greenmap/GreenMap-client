@@ -4,10 +4,19 @@ import { BarCodeScanner, Font } from 'expo';
 
 import app_styles from '../../appStyle';
 
+//for validation
+var onScanCalls = 0;
+
 export default class ScannerScreen extends Component {
-    state = {
-        barcodeData: null,
-        fontsLoaded: false
+    constructor(props){
+        super(props);
+        
+        this.state = {
+            barcodeData: null,
+            fontsLoaded: false,
+            onBarcodeScan: this._onScan,
+        }
+
     }
 
     async componentDidMount() {
@@ -17,18 +26,15 @@ export default class ScannerScreen extends Component {
         this.setState({fontsLoaded : true});
     }
 
-  onScan = (scan) => {
-    if (scan.data == this.state.barcodeData) return;
-    this.setState({barcodeData: scan.data}, 
-        () => {
-            this.props.dispatch({type: "UPDATE_BARCODE_DATA"});
-            this.props.dispatch({type: "LOADING_RESULTS"});
-        })
-
-    //returns some dummy JSON
-    fetch("https://facebook.github.io/react-native/movies.json")
-    .then((res) => res.json())
-    .then((resJSON) => {
+  _onScan = (scan) => {
+    console.log('onScan was called');
+    if (onScanCalls == 5) {
+        console.log(`onScanCalls should be 5 and it is ${onScanCalls}`);
+        this.props.dispatch({type: "UPDATE_BARCODE_DATA"});
+        
+        fetch("https://facebook.github.io/react-native/movies.json")
+        .then((res) => res.json())
+        .then((resJSON) => {
         switch (resJSON.title) {
             case "The Basics - Networking":
                 this.props.dispatch({type:"RENDER_WIKIMISS_SCREEN"});
@@ -43,9 +49,25 @@ export default class ScannerScreen extends Component {
     })
     .catch((error) => console.log(error))
 
-    this.props.navigation.navigate("ResultsScreen");
-  }
+    } //end if
 
+    if (onScanCalls == 0) {
+        this.setState({barcodeData: scan.data})
+        onScanCalls += 1;
+        console.log(onScanCalls);
+        return;
+    }
+
+    if (scan.data != this.state.barcodeData) {
+        console.log("ERROR! BARCODE INVALID! START OVER!");
+        onScanCalls = 0;
+        console.log(onScanCalls);
+    }
+
+    onScanCalls += 1;
+    console.log(onScanCalls);
+}
+    
   goToForm = () => {
       alert("You pressed me!")
   }
@@ -54,7 +76,7 @@ export default class ScannerScreen extends Component {
   render() {
      return (
             <BarCodeScanner
-            onBarCodeScanned={this.onScan}
+            onBarCodeScanned={this.state.onBarcodeScan}
             style={[StyleSheet.absoluteFill, styles.container]}
             >
                 <View style={[StyleSheet.absoluteFill, styles.container]} />
