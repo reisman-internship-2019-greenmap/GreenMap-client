@@ -3,7 +3,7 @@ import Scanner from '../components/scanner';
 
 const mapStateToProps = (state) => ({
     barcodeData: state.scannerComponent.barcodeData,
-    loadingResults: state.scannerComponent.loadingResults,
+    areFontsLoaded: state.loadingStatus.areFontsLoaded,
 })
 
 export default ScannerContainer = connect(mapStateToProps)(Scanner)

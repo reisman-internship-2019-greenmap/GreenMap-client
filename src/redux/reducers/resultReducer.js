@@ -6,6 +6,7 @@ const initialState = {
 const wikiReducer = (state=initialState.didWikiMiss, action) => {
     switch (action.type) {
         case ("RENDER_WIKIMISS_SCREEN"):
+            console.log("wikiMiss action dispatched");
             return 1
 
         default:
@@ -16,6 +17,7 @@ const wikiReducer = (state=initialState.didWikiMiss, action) => {
 const barcodeReducer = (state=initialState.didBarcodeMiss, action) => {
     switch (action.type) {
         case "RENDER_BARCODEMISS_SCREEN":
+            console.log("barcodeMiss action dispatched");
             return 1
         
         default:
@@ -28,7 +30,7 @@ const ResultReducer = (state=initialState, action) => {
         case "RENDER_WIKIMISS_SCREEN":
             return {...state, didWikiMiss: wikiReducer(state.didWikiMiss, action)}
         
-        case "RENDER_BARCODEMISSSCREEN":
+        case "RENDER_BARCODEMISS_SCREEN":
             return{...state, didBarcodeMiss: barcodeReducer(state.didBarcodeMiss, action)}
 
         default:

@@ -1,10 +1,19 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Dimensions, TouchableOpacity, Text} from 'react-native';
-import { BarCodeScanner } from 'expo';
+import { BarCodeScanner, Font } from 'expo';
+
+import app_styles from '../../appStyle';
 
 export default class ScannerScreen extends Component {
     state = {
         barcodeData: null
+    }
+
+    async componentDidMount() {
+        await Font.loadAsync({
+            'Raleway-Extra-Bold' : require('../../assets/Raleway-ExtraBold.ttf')
+        });
+        this.props.dispatch("FONTS_ARE_LOADED");
     }
 
   onScan = (scan) => {
@@ -15,11 +24,24 @@ export default class ScannerScreen extends Component {
             this.props.dispatch({type: "LOADING_RESULTS"});
         })
 
+    //returns some dummy JSON
     fetch("https://facebook.github.io/react-native/movies.json")
     .then((res) => res.json())
-    .then((resJSON) => console.log(resJSON.title))
+    .then((resJSON) => {
+        switch (resJSON.title) {
+            case "The Basics - Networking":
+                this.props.dispatch({type:"RENDER_WIKIMISS_SCREEN"});
+                console.log("line after dispatch in barcodeScanner");
+                break;
+            case "barcode missed":
+                this.props.dispatch({type:"RENDER_BARCODEMISS_SCREEN"});
+                break;
+            default:
+                //pass
+        }
+    })
     .catch((error) => console.log(error))
-    
+
     this.props.navigation.navigate("ResultsScreen");
   }
 
@@ -27,6 +49,7 @@ export default class ScannerScreen extends Component {
       alert("You pressed me!")
   }
 
+  //turn the TouchableOpacity and text into the original GreenmapButton
   render() {
      return (
             <BarCodeScanner
@@ -41,8 +64,8 @@ export default class ScannerScreen extends Component {
                     <View style={styles.opaqueEdge} />
                 </View>
                 <View style={[styles.opaqueEdge, styles.bottom]} />
-                    <TouchableOpacity style={styles.scanner_button} onPress={this.goToForm}>
-                        <Text>{this.props.barcodeData}</Text>
+                    <TouchableOpacity style={[app_styles.app_button_light, styles.scanner_button]} onPress={this.goToForm}>
+                        <Text>Enter Item Manually</Text>
                     </TouchableOpacity>
             </BarCodeScanner>
     )} //end render
@@ -77,11 +100,9 @@ const styles = StyleSheet.create({
         flex: 10,   
     },
 
-    scanner_button: {
+   scanner_button: {
         position: 'absolute',
         left: deviceWidth/4,
         bottom: deviceHeight/10,
-        padding: 10,
-        backgroundColor: "green",
     },
 })

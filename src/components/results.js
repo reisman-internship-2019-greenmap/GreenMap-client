@@ -31,9 +31,13 @@ class BarcodeDidMiss extends Component {
 
 export default class ResultsView extends Component {
     render() {
-        return(
-        <ResultSuccess />
-    )}
+        return (
+            <View style={{flex:1}}>
+                {this.props.didWikiMiss ? <WikiDidMiss /> :
+                 this.props.didBarcodeMiss ? <BarcodeDidMiss />:
+                <ResultSuccess />}
+            </View>
+        )}
 }
 
 const styles = StyleSheet.create({
