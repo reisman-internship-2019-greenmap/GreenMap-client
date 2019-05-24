@@ -13,7 +13,7 @@ export default StyleSheet.create({
     },
 
     app_text_bold: {
-        fontFamily: 'raleway-extra-bold',
+        fontFamily: 'Raleway-Extra-Bold',
         fontSize: 20,
         color: '#ffffff',
         textAlign: 'center',
