@@ -6,14 +6,15 @@ import app_styles from '../../appStyle';
 
 export default class ScannerScreen extends Component {
     state = {
-        barcodeData: null
+        barcodeData: null,
+        fontsLoaded: false
     }
 
     async componentDidMount() {
         await Font.loadAsync({
-            'Raleway-Extra-Bold' : require('../../assets/Raleway-ExtraBold.ttf')
+            "Raleway-Extra-Bold": require("../../assets/Raleway-ExtraBold.ttf")
         });
-        this.props.dispatch("FONTS_ARE_LOADED");
+        this.setState({fontsLoaded : true});
     }
 
   onScan = (scan) => {
@@ -65,7 +66,9 @@ export default class ScannerScreen extends Component {
                 </View>
                 <View style={[styles.opaqueEdge, styles.bottom]} />
                     <TouchableOpacity style={[app_styles.app_button_light, styles.scanner_button]} onPress={this.goToForm}>
-                        <Text>Enter Item Manually</Text>
+                        {this.state.fontsLoaded ? 
+                            <Text style={[app_styles.app_text_bold, {fontSize: 18}]}>Enter Item Manually</Text>:
+                            <Text>Enter Item Manually</Text>}
                     </TouchableOpacity>
             </BarCodeScanner>
     )} //end render
