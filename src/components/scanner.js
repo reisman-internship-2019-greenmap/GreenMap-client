@@ -68,6 +68,7 @@ export default class ScannerScreen extends Component {
         console.log("ERROR! BARCODE INVALID! START OVER!");
         onScanCalls = 0;
         console.log(onScanCalls);
+        return;
     }
 
     onScanCalls += 1;
