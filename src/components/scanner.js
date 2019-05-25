@@ -26,8 +26,11 @@ export default class ScannerScreen extends Component {
         this.setState({fontsLoaded : true});
     }
 
+    /*The fefault behavior is repeated calls to _onScan by expo's BarcodeScanner 
+    every 500ms. this function is called 5 times while the user scans a barcode. 
+    If all five scans match, the data is valid and sent to the server. Otherwise, 
+    the user is notified of a validation error and asked to try again */
   _onScan = (scan) => {
-    console.log('onScan was called');
     if (onScanCalls == 5) {
         console.log(`onScanCalls should be 5 and it is ${onScanCalls}`);
         this.props.dispatch({type: "UPDATE_BARCODE_DATA"});
@@ -49,6 +52,9 @@ export default class ScannerScreen extends Component {
     })
     .catch((error) => console.log(error))
 
+    this.props.navigation.navigate("ResultsScreen");
+    this.setState({onBarcodeScan: undefined});
+    return;
     } //end if
 
     if (onScanCalls == 0) {
