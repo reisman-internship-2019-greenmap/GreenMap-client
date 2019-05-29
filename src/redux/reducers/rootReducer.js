@@ -3,7 +3,7 @@ import ScannerReducer from './scannerReducer';
 import ResultReducer from './resultReducer';
 
 const RootReducer = combineReducers({
-    scannerComponent: ScannerReducer,
+    ScannerInfo: ScannerReducer,
     resultStatus: ResultReducer,
 })
 

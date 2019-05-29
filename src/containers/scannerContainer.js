@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import Scanner from '../components/scanner';
 
 const mapStateToProps = (state) => ({
-    data: state.scannerComponent.data,
+    onScanCalls: state.ScannerInfo.onScanCalls
 })
 
 export default ScannerContainer = connect(mapStateToProps)(Scanner)

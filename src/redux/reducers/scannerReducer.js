@@ -1,34 +1,21 @@
 const initialState = {
-    data: "12345",
-    loadingResults: 0
+    onScanCalls: 0
 }
 
-const barcodeReducer = (state=initialState.data, action) => {
+const callTracker = (state=initialState.onScanCalls, action) => {
     switch(action.type) {
-        case "UPDATE_BARCODE_DATA":
-            return("Recieved update barcodeData")
+        case "UPDATE_CALL_TRACKER":
+            return state + 1
 
         default:
             return state
     }
 }
 
-const loadingReducer = (state=initialState.loadingResults, action) => {
-    switch(action.type) {
-        case "LOADING_RESULTS":
-            return 1
-        default: 
-            return state
-    }
-}
-
 const ScannerReducer = (state=initialState, action) => {
     switch(action.type) {
-        case "UPDATE_BARCODE_DATA":
-            return {...state, barcodeData: barcodeReducer(state.data, action)}
-        
-        case "LOADING_RESULTS":
-            return {...state, loadingResults: loadingReducer(state.loadingResults, action)}
+        case "UPDATE_CALL_TRACKER":
+            return {...state, onScanCalls: callTracker(state.onScanCalls, action)}
 
         default:
             return state
