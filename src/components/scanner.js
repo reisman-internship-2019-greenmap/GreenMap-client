@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Dimensions, TouchableOpacity, Text} from 'react-native';
 import { BarCodeScanner, Font } from 'expo';
+import {withNavigation} from 'react-navigation';
 
 import app_styles from '../../appStyle';
 
 //for validation
 var onScanCalls = 0;
 
-export default class ScannerScreen extends Component {
+class ScannerScreen extends Component {
     constructor(props){
         super(props);
         
@@ -24,6 +25,13 @@ export default class ScannerScreen extends Component {
             "Raleway-Extra-Bold": require("../../assets/Raleway-ExtraBold.ttf")
         });
         this.setState({fontsLoaded : true});
+        this.listener = this.props.navigation.addListener("didFocus", () => {
+            this.resetValidation();
+        })
+    }
+
+    resetValidation = () => {
+        console.log("Reset validation was called");
     }
 
     /*The fefault behavior is repeated calls to _onScan by expo's BarcodeScanner 
@@ -102,6 +110,8 @@ export default class ScannerScreen extends Component {
             </BarCodeScanner>
     )} //end render
 } //end Scanner
+
+export default withNavigation(ScannerScreen);
 
 //define consts used in the StyleSheet
 const opacity = 'rgba(0, 0, 0, .6)';
