@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Dimensions, TouchableOpacity, Text} from 'react-native';
-import { BarCodeScanner, Font } from 'expo';
+import { BarCodeScanner, Font, Permissions } from 'expo';
 import {withNavigation} from 'react-navigation';
 
 import app_styles from '../../appStyle';
@@ -11,7 +11,6 @@ class ScannerScreen extends Component {
         super(props);
         
         this.state = {
-            barcodeData: null,
             fontsLoaded: false,
             onBarcodeScan: this._onScan,
         }
@@ -19,6 +18,7 @@ class ScannerScreen extends Component {
     }
     //TODO: Factor in camera permissions
     async componentDidMount() {
+        this._requestCameraPermission();
         await Font.loadAsync({
             "Raleway-Extra-Bold": require("../../assets/Raleway-ExtraBold.ttf")
         });
@@ -26,7 +26,13 @@ class ScannerScreen extends Component {
         this.listener = this.props.navigation.addListener("willFocus", () => {
             this.resetValidation();
         })
-    } //
+    } 
+
+    _requestCameraPermission = async () => {
+        const {status} = await Permissions.askAsync(Permissions.CAMERA);
+        this.props.dispatch({type: "UPDATE_CAMERA_PERMISSIONS", status: (status === "granted")});
+        console.log(this.props.permissions);
+    }
 
     resetValidation = () => {
         this.props.dispatch({type: "RESET_CALL_TRACKER"});
@@ -36,13 +42,14 @@ class ScannerScreen extends Component {
         
     }
 
+
   _onScan = (scan) => {
       console.log(`onScan was called and scan calls is ${this.props.onScanCalls}`);
       this.props.dispatch({type: "UPDATE_CALL_TRACKER"});
       
       //set initial read
       if (this.props.onScanCalls == 0) {
-          this.props.dispatch({type: "UPDATE_BARCODE_DATA", data:scan.data});
+          this.props.dispatch({type: "UPDATE_BARCODE_DATA", data:scan.data}); //
           return
       }
 
@@ -79,8 +86,9 @@ class ScannerScreen extends Component {
       alert("You pressed me!")
   }
 
-  //turn the TouchableOpacity and text into the original GreenmapButton
+  //TODO: turn the TouchableOpacity and text into the original GreenmapButton
   render() {
+    if (this.props.permissions) {
      return (
             <BarCodeScanner
             onBarCodeScanned={this.state.onBarcodeScan}
@@ -100,8 +108,16 @@ class ScannerScreen extends Component {
                             <Text>Enter Item Manually</Text>}
                     </TouchableOpacity>
             </BarCodeScanner>
-    )} //end render
-} //end Scanner
+     )} //end if
+
+     else {
+         return (
+            <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+                <Text style={{fontSize: 20, textAlign: "center"}}>You must enable camera access</Text>
+            </View>
+         )
+     }
+}} //end Scanner
 
 export default withNavigation(ScannerScreen);
 
