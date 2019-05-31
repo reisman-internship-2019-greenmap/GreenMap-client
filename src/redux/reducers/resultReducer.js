@@ -4,23 +4,24 @@ const initialState = {
     didWikiMiss: 0,
     didBarcodeMiss: 0,
     statusCode: null,
-    result: {
-        barcode: null,
-        name: null,
-        manufacturer: null,
-        ESG: null,
-    }
+    result: null,
 }
 
-const statusCodeReducer = (state=initialState.statusCode, action) => {
-
-}
 
 const serverResponseReducer = (state=initialState.result, action) => {
     switch (action.type) {
         case "UPDATE_RESULT":
             console.log("Update result action was dispatched");
+            obj = JSON.stringify(action.result)
+            console.log(`setting result to ${obj}`);
             return action.result
+
+        case "RESULT_ERROR":
+            console.log("Result error was dispatched");
+            return ({
+                name: "No results to show",
+                barcode: "nope"
+            })
         
         default:
             return state
@@ -36,6 +37,9 @@ const ResultReducer = (state=initialState, action) => {
             return{...state, didBarcodeMiss: barcodeReducer(state.didBarcodeMiss, action)}
 
         case "UPDATE_RESULT":
+            return{...state, result: serverResponseReducer(state.result, action)}
+
+        case "RESULT_ERROR":
             return{...state, result: serverResponseReducer(state.result, action)}
 
         default:
