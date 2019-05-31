@@ -4,7 +4,7 @@ import ResultReducer from './resultReducer';
 
 const RootReducer = combineReducers({
     ScannerInfo: ScannerReducer,
-    resultStatus: ResultReducer,
+    resultInfo: ResultReducer,
 })
 
 export default RootReducer

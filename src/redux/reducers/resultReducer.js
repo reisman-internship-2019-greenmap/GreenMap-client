@@ -1,24 +1,26 @@
+//TODO: barcodeMiss and wikiMiss should be one screen
+
 const initialState = {
     didWikiMiss: 0,
     didBarcodeMiss: 0,
-}
-
-const wikiReducer = (state=initialState.didWikiMiss, action) => {
-    switch (action.type) {
-        case ("RENDER_WIKIMISS_SCREEN"):
-            console.log("wikiMiss action dispatched");
-            return 1
-
-        default:
-            return state
+    statusCode: null,
+    result: {
+        barcode: null,
+        name: null,
+        manufacturer: null,
+        ESG: null,
     }
 }
 
-const barcodeReducer = (state=initialState.didBarcodeMiss, action) => {
+const statusCodeReducer = (state=initialState.statusCode, action) => {
+
+}
+
+const serverResponseReducer = (state=initialState.result, action) => {
     switch (action.type) {
-        case "RENDER_BARCODEMISS_SCREEN":
-            console.log("barcodeMiss action dispatched");
-            return 1
+        case "UPDATE_RESULT":
+            console.log("Update result action was dispatched");
+            return action.result
         
         default:
             return state
@@ -32,6 +34,9 @@ const ResultReducer = (state=initialState, action) => {
         
         case "RENDER_BARCODEMISS_SCREEN":
             return{...state, didBarcodeMiss: barcodeReducer(state.didBarcodeMiss, action)}
+
+        case "UPDATE_RESULT":
+            return{...state, result: serverResponseReducer(state.result, action)}
 
         default:
             return state
