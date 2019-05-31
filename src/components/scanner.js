@@ -37,14 +37,14 @@ class ScannerScreen extends Component {
     resetValidation = () => {
         this.props.dispatch({type: "RESET_CALL_TRACKER"});
         this.setState({onBarcodeScan: this._onScan}, () => {
-            console.log(`Reset validation was called, onScanCalls is ${this.props.onScanCalls}`);
+            console.log(`The scanner was reset`);
         })
         
     }
 
 
   _onScan = (scan) => {
-      console.log(`onScan was called and scan calls is ${this.props.onScanCalls}`);
+      console.log(`scan calls: ${this.props.onScanCalls}`);
       this.props.dispatch({type: "UPDATE_CALL_TRACKER"});
       
       //set initial read
@@ -57,29 +57,30 @@ class ScannerScreen extends Component {
       else if (this.props.onScanCalls == 5) {
         this.setState({onBarcodeScan: undefined}, 
             () => {
-            fetch('https://facebook.github.io/react-native/movies.json')
-            .then((res) => res.json())
+            fetch(`https://greenmap.herokuapp.com/0039800079305`)
+            .then((res) => {
+                console.log(res.status);
+                return res.json();
+            })
             .then((resJSON) => {
-                if (resJSON.title == "The Basics - Networking") {
-                    this.props.dispatch({type: "RENDER_BARCODEMISS_SCREEN"});
-                }
+                const result = resJSON.doc;
+                this.props.dispatch({type: "UPDATE_RESULT", result: result});
             }) //end callback
             this.props.navigation.navigate("ResultsScreen");
             })
         return
       }
 
-      //compare the current read and the previous read
+      //else, compare the current read and the previous read
       else {
           if (scan.data != this.props.barcodeData) {
-              console.log(`in else block. scan calls is ${this.props.onScanCalls}`);
               this.props.dispatch({type:"RESET_CALL_TRACKER"});
               console.log(`Validation error, onScanCalls is ${this.props.onScanCalls}`);
               return
           }
       }
       
-      console.log(`End of onScan function. barcodeData is ${this.props.barcodeData}`);
+      console.log(`barcodeData: ${this.props.barcodeData}`);
 }
     
   goToForm = () => {
