@@ -16,15 +16,19 @@ class ScannerScreen extends Component {
         }
 
     }
-    //TODO: Factor in camera permissions
+    
+    //TODO: configure a blur listener
     async componentDidMount() {
         this._requestCameraPermission();
         await Font.loadAsync({
             "Raleway-Extra-Bold": require("../../assets/Raleway-ExtraBold.ttf")
         });
         this.setState({fontsLoaded : true});
-        this.listener = this.props.navigation.addListener("willFocus", () => {
+        this.focusListener = this.props.navigation.addListener("willFocus", () => {
             this.resetValidation();
+        })
+        this.blurListener = this.props.navigation.addListener("didBlur", () => {
+            this.setState({onBarcodeScan: undefined}, () => console.log("blurListener fired"));
         })
     } 
 
