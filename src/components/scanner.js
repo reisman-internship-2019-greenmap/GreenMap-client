@@ -87,7 +87,7 @@ class ScannerScreen extends Component {
 }
     
   goToForm = () => {
-      alert("You pressed me!")
+      this.props.navigation.navigate("FormScreen");
   }
 
   //TODO: turn the TouchableOpacity and text into the original GreenmapButton
