@@ -21,7 +21,8 @@ class ScannerScreen extends Component {
     async componentDidMount() {
         this._requestCameraPermission();
         await Font.loadAsync({
-            "Raleway-Extra-Bold": require("../../assets/Raleway-ExtraBold.ttf")
+            "Raleway-Extra-Bold": require("../../assets/Raleway-ExtraBold.ttf"),
+            "Raleway-regular": require('../../assets/Raleway-Regular.ttf')
         });
         this.setState({fontsLoaded : true});
         this.focusListener = this.props.navigation.addListener("willFocus", () => {
