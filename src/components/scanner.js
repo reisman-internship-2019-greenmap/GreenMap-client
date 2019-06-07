@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Dimensions, TouchableOpacity, Text} from 'react-native';
-import { BarCodeScanner, Font, Permissions } from 'expo';
+import {BarCodeScanner} from 'expo-barcode-scanner';
+import * as Permissions from 'expo-permissions';
+import * as Font from 'expo-font';
 import {withNavigation} from 'react-navigation';
 
 import app_styles from '../../appStyle';
