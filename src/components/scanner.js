@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Dimensions, TouchableOpacity, Text} from 'react-native';
-import { BarCodeScanner, Font, Permissions } from 'expo';
+import {BarCodeScanner} from 'expo-barcode-scanner';
+import * as Permissions from 'expo-permissions';
+import * as Font from 'expo-font';
 import {withNavigation} from 'react-navigation';
 
 import app_styles from '../../appStyle';
@@ -16,15 +18,20 @@ class ScannerScreen extends Component {
         }
 
     }
-    //TODO: Factor in camera permissions
+    
+    //TODO: configure a blur listener
     async componentDidMount() {
         this._requestCameraPermission();
         await Font.loadAsync({
-            "Raleway-Extra-Bold": require("../../assets/Raleway-ExtraBold.ttf")
+            "Raleway-Extra-Bold": require("../../assets/Raleway-ExtraBold.ttf"),
+            "Raleway-regular": require('../../assets/Raleway-Regular.ttf')
         });
         this.setState({fontsLoaded : true});
-        this.listener = this.props.navigation.addListener("willFocus", () => {
+        this.focusListener = this.props.navigation.addListener("willFocus", () => {
             this.resetValidation();
+        })
+        this.blurListener = this.props.navigation.addListener("didBlur", () => {
+            this.setState({onBarcodeScan: undefined}, () => console.log("blurListener fired"));
         })
     } 
 
@@ -37,14 +44,14 @@ class ScannerScreen extends Component {
     resetValidation = () => {
         this.props.dispatch({type: "RESET_CALL_TRACKER"});
         this.setState({onBarcodeScan: this._onScan}, () => {
-            console.log(`Reset validation was called, onScanCalls is ${this.props.onScanCalls}`);
+            console.log(`The scanner was reset`);
         })
         
     }
 
 
   _onScan = (scan) => {
-      console.log(`onScan was called and scan calls is ${this.props.onScanCalls}`);
+      console.log(`scan calls: ${this.props.onScanCalls}`);
       this.props.dispatch({type: "UPDATE_CALL_TRACKER"});
       
       //set initial read
@@ -55,35 +62,39 @@ class ScannerScreen extends Component {
 
       //if this condition is met then the barcode is valid
       else if (this.props.onScanCalls == 5) {
-        this.setState({onBarcodeScan: undefined}, 
-            () => {
-            fetch('https://facebook.github.io/react-native/movies.json')
-            .then((res) => res.json())
-            .then((resJSON) => {
-                if (resJSON.title == "The Basics - Networking") {
-                    this.props.dispatch({type: "RENDER_BARCODEMISS_SCREEN"});
-                }
-            }) //end callback
+        this.setState({onBarcodeScan: undefined}, () => {
+                //once the scanning function is shut off, talk to the server
+                fetch(`https://greenmap.herokuapp.com/${this.props.barcodeData}`)
+                .then((res) => res.json())
+                .catch(error => console.log('Error: ', error))
+                .then((resJSON) => {
+                    if (!resJSON.doc) {
+                        this.props.dispatch({type: "RESULT_ERROR"});
+                    }
+                    else {
+                        console.log('in else block in scanner.js');
+                        this.props.dispatch({type: "UPDATE_RESULT", result: resJSON.doc});
+                    }
+                }) //end server communication
             this.props.navigation.navigate("ResultsScreen");
-            })
+            }) //end setState callback
         return
-      }
+      } //end else if
 
-      //compare the current read and the previous read
+      //else, compare the current read and the previous read
       else {
           if (scan.data != this.props.barcodeData) {
-              console.log(`in else block. scan calls is ${this.props.onScanCalls}`);
               this.props.dispatch({type:"RESET_CALL_TRACKER"});
               console.log(`Validation error, onScanCalls is ${this.props.onScanCalls}`);
               return
           }
       }
       
-      console.log(`End of onScan function. barcodeData is ${this.props.barcodeData}`);
+      console.log(`barcodeData: ${this.props.barcodeData}`);
 }
     
   goToForm = () => {
-      alert("You pressed me!")
+      this.props.navigation.navigate("FormScreen");
   }
 
   //TODO: turn the TouchableOpacity and text into the original GreenmapButton
