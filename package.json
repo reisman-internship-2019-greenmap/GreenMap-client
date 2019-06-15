@@ -15,15 +15,13 @@
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-modal": "^11.0.2",
     "react-native-responsive-dimensions": "^2.0.1",
-    "react-native-swiper": "^1.5.14",
     "react-navigation": "^3.11.0",
-    "react-redux": "6.0.0",
+    "react-redux": "^7.0.1",
     "redux": "^4.0.1",
     "redux-form": "^8.2.3"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
-    "eslint-plugin-react": "^7.12.4",
     "expo-codemod": "^1.0.0"
   },
   "private": true
