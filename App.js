@@ -16,14 +16,24 @@ import FormContainer from './src/containers/formContainer';
 //set up navigation
 let RootStack = createStackNavigator ({
      ScannerScreen: { 
-         screen: ScannerContainer
-        },
+         screen: ScannerContainer,
+         navigationOptions: {
+             headerTitle: "Scanner"
+        }
+    },
+
     ResultsScreen: {
-        screen: ResultsContainer
+        screen: ResultsContainer,
+        navigationOptions: {
+            headerTitle: "Your Results"
+        }
         },
 
     FormScreen: {
-        screen: FormContainer
+        screen: FormContainer,
+        navigationOptions: {
+            headerTitle: "Product form"
+        }
     }}, //end screen config
 
     //start navigator config
