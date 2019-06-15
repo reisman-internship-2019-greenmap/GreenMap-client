@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
     Text,
@@ -47,11 +47,14 @@ const isABarcode = value => {
 const ManualEntryForm = (props) => {
     //Extract the handleSubmit prop supplied by redux-form
     const {handleSubmit} = props;
+    const [modalVisible, modalVisibilityToggle] = useState(false);
     
     //Define the function that is passed to the handleSubmit prop
     const submitValues = (values) => {
         body = JSON.stringify(values);
         console.log(body);
+        modalVisibilityToggle(!modalVisible);
+
         
         /*fetch('192.168.1.169:/3000', {
             method: "POST",
@@ -73,7 +76,7 @@ const ManualEntryForm = (props) => {
             {fontSize:20, color: "#58B34D", paddingBottom: 30, textDecorationLine: "underline"}]}>
                 Enter Product Information Below
             </Text>
-            <Modal isVisible={true}>
+            <Modal isVisible={modalVisible}>
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                   <View style={{alignItems: "center", justifyContent: "center", backgroundColor:"white"}}>
                       <Text style={[app_styles.app_text_bold, {padding: 20, textAlign: "center", color: "#58B34D", fontSize: 45 }]}>Submitted!</Text>
