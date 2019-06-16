@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
     Text,
@@ -52,8 +52,9 @@ const ManualEntryForm = (props) => {
     //Define the function that is passed to the handleSubmit prop
     const submitValues = (values) => {
         body = JSON.stringify(values);
-        console.log(body);
+        console.log("Inside submitValues");
         modalVisibilityToggle(!modalVisible);
+        return
 
         
         /*fetch('192.168.1.169:/3000', {
@@ -83,7 +84,7 @@ const ManualEntryForm = (props) => {
                       <Ionicons name="md-checkbox-outline" size={90} color="#CCCCCC" />
                       <TouchableOpacity
                         style={[app_styles.app_button_light, {marginTop: 30, marginBottom: 20, paddingLeft: 30, paddingRight: 30}]} 
-                        onPress={() => {alert("you pressed the button!")}}>
+                        onPress={() => modalVisibilityToggle(!modalVisible)}>
                         <Text style={[app_styles.app_text_bold, {fontSize: 22}]}>Ok</Text>
                     </TouchableOpacity>
                   </View>
