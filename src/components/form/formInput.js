@@ -3,7 +3,7 @@ import {Text, View, TextInput, StyleSheet} from 'react-native';
 import {Field} from 'redux-form';
 import {Ionicons} from '@expo/vector-icons'
 
-import app_styles from '../../../appStyle';
+import app_styles from '../../../styles/appStyle';
 
 //Stateless functions are the best components for redux form inputs
 const renderInput = (props) => {

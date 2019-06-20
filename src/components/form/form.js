@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal';
-import app_styles from '../../../appStyle';
+import app_styles from '../../../styles/appStyle';
 import {Ionicons} from '@expo/vector-icons'
 
 import EntryFormInput from './formInput';
