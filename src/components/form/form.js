@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
     Text,
@@ -13,20 +13,18 @@ import {Ionicons} from '@expo/vector-icons'
 
 import EntryFormInput from './formInput';
 
-/**  
- * @MARK FORM VALIDATION
- * The values returned by these functions are
- * displayed underneath the field, visible to the
- * user.
- * 
- * @required
- * checks if a field value is empty
- * 
- * @isABarcode
- * checks that the barcode field contains only
- * numbers and that is is 12 (UPC) or 13 (EAN-13)
- * digits in length
+/**
+ * @overview
+ * Most of this code base is class-based, but the
+ * redux form we implement works with functional
+ * components. This file's organization is therefore a
+ * little different from the other components, but still
+ * follows the same logical pattern
  */
+
+//MARK: init
+
+//MARK: Handlers
 const required = value => value ? undefined : "This field is required"
 const isABarcode = value => {
     if ((Number(value) !== NaN) & (value.length == 12 || value.length == 13)) {
@@ -35,21 +33,13 @@ const isABarcode = value => {
     return "That is not a valid barcode"//
 }
 
-/**
- * @MARK MANUAL ENTRY FORM
- * this is a redux form and much
- * of the functionality is automatically supplied through
- * redux. This includes the {handleSubmit} and {onChange}
- * props
- */
-
-
+//MARK: display (plus additional set-up)
 const ManualEntryForm = (props) => {
-    //Extract the handleSubmit prop supplied by redux-form
+    //MARK: properties
     const {handleSubmit} = props;
     const [modalVisible, modalVisibilityToggle] = useState(false);
     
-    //Define the function that is passed to the handleSubmit prop
+    //MARK: Handlers
     const submitValues = (values) => {
         body = JSON.stringify(values);
         console.log("Inside submitValues");
@@ -69,7 +59,7 @@ const ManualEntryForm = (props) => {
         .then(resJSON => console.log(resJSON)) */
       }
      
-     //Render the form.
+     //MARK: Display
      return (
         <View style={[styles.container, {paddingTop: 30}]}>
             <Text
@@ -98,21 +88,6 @@ const ManualEntryForm = (props) => {
                     fieldName="barcode"
                     placeholder="Ex: 0039800079305"
                     validate={[required, isABarcode]}/>
-                <EntryFormInput 
-                    title="Product Name" 
-                    fieldName="product_name"
-                    placeholder="Dell G7 Gaming Laptop"
-                    validate={[required]} />
-                <EntryFormInput 
-                    title="Product Category" 
-                    fieldName="category"
-                    placeholder="Laptop"
-                    validate={[required]} />
-                <EntryFormInput 
-                    title="Manufacturer" 
-                    fieldName="manufacturer"
-                    placeholder="Dell Canada"
-                    validate={[required]} />
                 <TouchableOpacity
                 style={[app_styles.app_button_light, {marginTop: 30, paddingLeft: 20, paddingRight: 20}]} 
                 onPress={handleSubmit(submitValues)}>

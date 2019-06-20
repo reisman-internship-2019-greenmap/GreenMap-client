@@ -9,6 +9,8 @@ import scannerStyles from '../../styles/scannerStyles';
 
 
 class ScannerScreen extends Component {
+    
+    //MARK: init
     constructor(props){
         super(props);
         
@@ -18,7 +20,6 @@ class ScannerScreen extends Component {
 
     }
     
-    //TODO: configure a blur listener
     async componentDidMount() {
         this._requestCameraPermission();
         this.focusListener = this.props.navigation.addListener("willFocus", () => {
@@ -29,6 +30,7 @@ class ScannerScreen extends Component {
         })
     } 
 
+    //MARK: handlers
     _requestCameraPermission = async () => {
         const {status} = await Permissions.askAsync(Permissions.CAMERA);
         this.props.dispatch({type: "UPDATE_CAMERA_PERMISSIONS", status: (status === "granted")});
@@ -91,7 +93,7 @@ class ScannerScreen extends Component {
       this.props.navigation.navigate("FormScreen");
   }
 
-
+  //MARK: display
   render() {
     if (this.props.permissions) {
      return (

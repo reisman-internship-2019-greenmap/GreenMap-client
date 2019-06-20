@@ -15,7 +15,7 @@ export default StyleSheet.create({
     },
 
     topView: {
-        flex: 0.9
+        flex: 1.2
     },
 
     center: {
@@ -30,6 +30,6 @@ export default StyleSheet.create({
     bottom: {
         justifyContent: "center",
         alignItems: "center",
-        flex: 1.5
+        flex: 1.2
     }
 })
