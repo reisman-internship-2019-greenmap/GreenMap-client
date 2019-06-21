@@ -23,5 +23,10 @@ export default StyleSheet.create({
         fontFamily: styleVars.fonts.regular,
         color: '#44963A',
         textAlign: 'left',
+    },
+
+    centerItems: {
+        alignItems: "center",
+        justifyContent: "center"
     }
 })

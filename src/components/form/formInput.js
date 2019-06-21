@@ -3,7 +3,8 @@ import {Text, View, TextInput, StyleSheet} from 'react-native';
 import {Field} from 'redux-form';
 import {Ionicons} from '@expo/vector-icons'
 
-import app_styles from '../../../styles/appStyle';
+import appStyles from '../../../styles/appStyle';
+import formStyles from '../../../styles/formStyles';
 
 //Stateless functions are the best components for redux form inputs
 const renderInput = (props) => {
@@ -12,7 +13,7 @@ const renderInput = (props) => {
   return ( <View style={{flexDirection: "column", alignItems: "flex-start"}}>
             <TextInput 
            {...inputProps}
-            style={styles.input} 
+            style={formStyles.formTextInput} 
             onChangeText={input.onChange}
             value={input.value}
             returnKeyType="done"
@@ -20,7 +21,7 @@ const renderInput = (props) => {
               {meta.touched && meta.error ?
               <View style={{flexDirection: "row", alignItems: "center"}}> 
               <Ionicons name="md-alert" size={20} color="#E24747" />
-              <Text style={styles.error}> {meta.error} </Text>
+              <Text style={formStyles.inputError}> {meta.error} </Text>
               </View> :
               <Text> </Text>}
     </View>
@@ -30,8 +31,8 @@ const renderInput = (props) => {
 //Components need to be wrapped in a Field for redux-form to work properly
 const EntryFormInput = (props) => {
     return (
-        <View style={{flex: 1, flexDirection: "column", justifyContent: "flex-start", margin: 6 }}>
-            <Text style={[app_styles.app_text_bold, {color: '#44963A', textAlign: "left"}]}>
+        <View style={formStyles.formInputContainer}>
+            <Text style={[appStyles.appTextBold, {color: '#44963A', textAlign: "left", fontSize: 20}]}>
             {props.title}
             </Text>
             <Field
@@ -45,19 +46,3 @@ const EntryFormInput = (props) => {
 }
 
 export default EntryFormInput
-
-const styles = StyleSheet.create({
-    input: {
-      borderColor: '#44963A',
-      width: 300,
-      borderWidth: 1,
-      height: 40,
-      padding: 10,
-    },
-
-    error: {
-      fontSize: 13,
-      color: "#E24747",
-      fontWeight: "bold"
-    }
-  });

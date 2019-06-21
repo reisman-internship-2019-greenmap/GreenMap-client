@@ -3,12 +3,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {
     Text,
     TouchableOpacity, 
-    StyleSheet,
     View
 } from 'react-native';
 
 import Modal from 'react-native-modal';
-import app_styles from '../../../styles/appStyle';
+import appStyles from '../../../styles/appStyle';
+import formStyles from '../../../styles/formStyles'
+import styleVars from '../../../styles/styleVars';
 import {Ionicons} from '@expo/vector-icons'
 
 import EntryFormInput from './formInput';
@@ -35,6 +36,7 @@ const isABarcode = value => {
 
 //MARK: display (plus additional set-up)
 const ManualEntryForm = (props) => {
+    
     //MARK: properties
     const {handleSubmit} = props;
     const [modalVisible, modalVisibilityToggle] = useState(false);
@@ -61,52 +63,46 @@ const ManualEntryForm = (props) => {
      
      //MARK: Display
      return (
-        <View style={[styles.container, {paddingTop: 30}]}>
+        <View style={[{padding: 30}, appStyles.centerItems, formStyles.formContainer]}>
             <Text
-            style={[app_styles.app_text_bold, 
-            {fontSize:20, color: "#58B34D", paddingBottom: 30, textDecorationLine: "underline"}]}>
+            style={[appStyles.appTextBold, formStyles.formHeader]}>
                 Enter Product Information Below
             </Text>
             <Modal isVisible={modalVisible}>
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                  <View style={{alignItems: "center", justifyContent: "center", backgroundColor:"white"}}>
-                      <Text style={[app_styles.app_text_bold, {padding: 20, textAlign: "center", color: "#58B34D", fontSize: 45 }]}>Submitted!</Text>
+                <View style={[{flex: 1 }, appStyles.centerItems]}>
+                  <View style={[{backgroundColor:"white"}, appStyles.centerItems]}>
+                      <Text style={[appStyles.appTextBold, formStyles.formModalTitle]}>
+                          Submitted!
+                        </Text>
                       <Ionicons name="md-checkbox-outline" size={90} color="#CCCCCC" />
                       <TouchableOpacity
-                        style={[app_styles.app_button_light, {marginTop: 30, marginBottom: 20, paddingLeft: 30, paddingRight: 30}]} 
+                        style={[appStyles.appButton, formStyles.submit, {backgroundColor: styleVars.colors.light_green}]} 
                         onPress={() => modalVisibilityToggle(!modalVisible)}>
-                        <Text style={[app_styles.app_text_bold, {fontSize: 22}]}>Ok</Text>
+                        <Text style={[appStyles.appTextBold, {fontSize: 22}]}>
+                            Ok
+                        </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
               </Modal>
             <KeyboardAwareScrollView
                 extraScrollHeight={100}>
-                <View style={styles.container}>
+                <View style={[appStyles.centerItems, formStyles.formContainer]}>
                 <EntryFormInput 
                     title="Barcode Number" 
                     fieldName="barcode"
                     placeholder="Ex: 0039800079305"
                     validate={[required, isABarcode]}/>
                 <TouchableOpacity
-                style={[app_styles.app_button_light, {marginTop: 30, paddingLeft: 20, paddingRight: 20}]} 
+                style={[appStyles.appButton, formStyles.submit]} 
                 onPress={handleSubmit(submitValues)}>
-                    <Text style={[app_styles.app_text_bold, {fontSize: 22}]}>Submit</Text>
+                    <Text style={[appStyles.appTextBold, {fontSize: 22}]}>Submit</Text>
                 </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>
         </View>
-        )
-}
-
-const styles= StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: '#F6F6F6'
-    }
-})
+    )
+}//
 
 
 export default ManualEntryForm
