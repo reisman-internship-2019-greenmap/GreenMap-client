@@ -1,32 +1,27 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Dimensions, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import {BarCodeScanner} from 'expo-barcode-scanner';
 import * as Permissions from 'expo-permissions';
-import * as Font from 'expo-font';
 import {withNavigation} from 'react-navigation';
 
-import app_styles from '../../appStyle';
+import appStyles from '../../styles/appStyle';
+import scannerStyles from '../../styles/scannerStyles';
 
 
 class ScannerScreen extends Component {
+    
+    //MARK: init
     constructor(props){
         super(props);
         
         this.state = {
-            fontsLoaded: false,
             onBarcodeScan: this._onScan,
         }
 
     }
     
-    //TODO: configure a blur listener
     async componentDidMount() {
         this._requestCameraPermission();
-        await Font.loadAsync({
-            "Raleway-Extra-Bold": require("../../assets/Raleway-ExtraBold.ttf"),
-            "Raleway-regular": require('../../assets/Raleway-Regular.ttf')
-        });
-        this.setState({fontsLoaded : true});
         this.focusListener = this.props.navigation.addListener("willFocus", () => {
             this.resetValidation();
         })
@@ -35,6 +30,7 @@ class ScannerScreen extends Component {
         })
     } 
 
+    //MARK: handlers
     _requestCameraPermission = async () => {
         const {status} = await Permissions.askAsync(Permissions.CAMERA);
         this.props.dispatch({type: "UPDATE_CAMERA_PERMISSIONS", status: (status === "granted")});
@@ -97,27 +93,26 @@ class ScannerScreen extends Component {
       this.props.navigation.navigate("FormScreen");
   }
 
-  //TODO: turn the TouchableOpacity and text into the original GreenmapButton
+  //MARK: display
   render() {
     if (this.props.permissions) {
      return (
             <BarCodeScanner
             onBarCodeScanned={this.state.onBarcodeScan}
-            style={[StyleSheet.absoluteFill, styles.container]}
+            style={[StyleSheet.absoluteFill, scannerStyles.scannerContainer]}
             >
-                <View style={[StyleSheet.absoluteFill, styles.container]} />
-                <View style={styles.opaqueEdge} />
-                <View style={styles.center}>
-                    <View style={styles.opaqueEdge} />
-                    <View style={styles.focused} />
-                    <View style={styles.opaqueEdge} />
+                <View style={[StyleSheet.absoluteFill, scannerStyles.scannerContainer]} />
+                <View style={[scannerStyles.boundingView, scannerStyles.topView]} />
+                <View style={scannerStyles.center}>
+                    <View style={scannerStyles.boundingView} />
+                    <View style={scannerStyles.focusBox} />
+                    <View style={scannerStyles.boundingView} />
                 </View>
-                <View style={[styles.opaqueEdge, styles.bottom]} />
-                    <TouchableOpacity style={[app_styles.app_button_light, styles.scanner_button]} onPress={this.goToForm}>
-                        {this.state.fontsLoaded ? 
-                            <Text style={[app_styles.app_text_bold, {fontSize: 18}]}>Enter Item Manually</Text>:
-                            <Text>Enter Item Manually</Text>}
+                <View style={[scannerStyles.boundingView, scannerStyles.bottom]}>
+                    <TouchableOpacity style={appStyles.appButton} onPress={this.goToForm}>
+                            <Text style={[appStyles.appTextBold, {fontSize: 18}]}>Enter Item Manually</Text>
                     </TouchableOpacity>
+                </View>
             </BarCodeScanner>
      )} //end if
 
@@ -132,38 +127,3 @@ class ScannerScreen extends Component {
 
 export default withNavigation(ScannerScreen);
 
-//define consts used in the StyleSheet
-const opacity = 'rgba(0, 0, 0, .6)';
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column'
-    },
-
-    opaqueEdge: {
-        flex: 1,
-        backgroundColor: opacity,
-    },
-
-    center: {
-        flex: 1, 
-        flexDirection: 'row',
-    },
-
-    bottom: {
-        backgroundColor: opacity,
-    },
-
-    focused: {
-        flex: 10,   
-    },
-
-   scanner_button: {
-        position: 'absolute',
-        left: deviceWidth/4,
-        bottom: deviceHeight/10,
-    },
-})
