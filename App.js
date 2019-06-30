@@ -11,7 +11,7 @@ import * as Font from 'expo-font';
 //components
 import ScannerContainer from './src/containers/scannerContainer';
 import ResultsContainer from './src/containers/resultContainer';
-import FormContainer from './src/containers/formContainer';
+import ManualEntryForm from './src/components/form/form';
 
 
 
@@ -19,9 +19,6 @@ import FormContainer from './src/containers/formContainer';
 let RootStack = createStackNavigator ({
      ScannerScreen: { 
          screen: ScannerContainer,
-         navigationOptions: {
-             headerTitle: "Scanner"
-        }
     },
 
     ResultsScreen: {
@@ -32,7 +29,7 @@ let RootStack = createStackNavigator ({
         },
 
     FormScreen: {
-        screen: FormContainer,
+        screen: ManualEntryForm,
         navigationOptions: {
             headerTitle: "Product form"
         }
