@@ -18,6 +18,11 @@ import {Ionicons} from '@expo/vector-icons'
 
 //MARK: Handlers
 class ManualEntryForm extends Component {
+    //MARK: Properties
+    static navigationOptions = {
+        headerTitle: headerTitle("Product Form")
+    }
+    
     constructor(props) {
         super(props)
         this.state = {

@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faLeaf, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faLeaf, faBars, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 import navBarStyles from '../styles/navBarStyles';
 import appStyles from '../styles/appStyle'
 
-customNavBar = (title) => {
+headerTitle = (title) => {
     return (
         <View style={navBarStyles.container}>
             <FontAwesomeIcon icon={faLeaf} size={20} color={"white"}/>
@@ -25,7 +25,16 @@ headerRightButton = () => {
     )
 }
 
+headerBackButton = () => {
+    return (
+        <FontAwesomeIcon icon={faChevronLeft} size={25} color={"white"} />
+    )
+}
+   
+
+
 module.exports = {
-    customNavBar: customNavBar,
-    headerRightButton: headerRightButton
+    headerTitle: headerTitle,
+    headerRightButton: headerRightButton,
+    headerBackButton: headerBackButton
 }

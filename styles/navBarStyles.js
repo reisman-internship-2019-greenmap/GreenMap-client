@@ -8,7 +8,7 @@ export default StyleSheet.create({
         marginRight: 20
     },
     title: {
-        fontSize: 23, 
+        fontSize: 21, 
         marginLeft: 5
     }
 })
