@@ -9,7 +9,7 @@ NOTE: You need to have the Expo CLI installed on your machine to run this app
 2. Open terminal/command prompt
 3. cd into the route directory
 4. Run `npm install`
-5. Run 'npm install expo-cli --global'
+5. Run `npm install expo-cli --global`
 6. Run `expo start`, `npm start` works too.
 7. Proceed as with a normal Expo app (see https://expo.io/learn if you've never used Expo before)
 
