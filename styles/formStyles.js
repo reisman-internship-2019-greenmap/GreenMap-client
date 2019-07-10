@@ -51,6 +51,7 @@ export default StyleSheet.create({
     inputError: {
         fontSize: 13,
         color: "#E24747",
-        fontWeight: "bold"
+        fontWeight: "bold",
+        marginLeft: 10
     }
 })

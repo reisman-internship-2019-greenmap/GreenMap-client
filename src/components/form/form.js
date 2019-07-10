@@ -7,11 +7,12 @@ import {
     TextInput
 } from 'react-native';
 
-import Modal from 'react-native-modal';
+
 import appStyles from '../../../styles/appStyle';
 import formStyles from '../../../styles/formStyles'
 import styleVars from '../../../styles/styleVars';
 import {Ionicons} from '@expo/vector-icons'
+
 
 
 //MARK: init
@@ -26,42 +27,35 @@ class ManualEntryForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            barcode: '',
+            barcodeValue: '',
+            barcodeError: ''
         }
     }
 
-    //MARK: hanlders
+    //MARK: hanlders //
     updateValue = (text, field) => {
         if (field == "barcode") {
-            this.setState({barcode: text})
+            this.setState({barcodeValue: text})
         }
     }
 
     validateForm = () => {
-        var errors = {}
-        //check if field is not empty
-        if (this.state.barcode == '') {
-            errors.fieldIsEmpty = 1
-            return errors
+        var error;
+        if (this.state.barcodeValue == '') { 
+            error = "This field is required"
+        }
+        else if (isNaN(Number(this.state.barcodeValue))) {
+            error = "The barcode must be a number"
         }
 
-        //check if barcode is a number
-        if (isNaN(Number(this.state.barcode))) {
-            errors.fieldIsNotANumber = 1
-            return errors
+        else if (this.state.barcodeValue.length != 12 || this.state.barcodeValue.length != 13) {
+            error = "That is not a valid barcode"
         }
+       
+        this.setState({barcodeError: error}, () => {
+            alert(this.state.barcodeError)
+        })
 
-        //check that entry is correct length
-        if (this.state.barcode.length != 12 || this.state.barcode.length != 13) {
-            errors.fieldIsNotABarcode = 1
-            return errors
-        }
-    }
-
-    reactToValidation = () => {
-        validationErrors = this.validateForm()
-        errorsString = JSON.stringify(validationErrors)
-        alert(errorsString)
     }
      
      //MARK: Display
@@ -72,36 +66,25 @@ class ManualEntryForm extends Component {
             style={[appStyles.appTextBold, formStyles.formHeader]}>
                 Enter Product Information
             </Text>
-            <Modal isVisible={false}>
-                <View style={[{flex: 1 }, appStyles.centerItems]}>
-                  <View style={[{backgroundColor:"white"}, appStyles.centerItems]}>
-                      <Text style={[appStyles.appTextBold, formStyles.formModalTitle]}>
-                          Submitted!
-                        </Text>
-                      <Ionicons name="md-checkbox-outline" size={90} color="#CCCCCC" />
-                      <TouchableOpacity
-                        style={[appStyles.appButton, formStyles.submit, {backgroundColor: styleVars.colors.light_green}]} 
-                        onPress={() => alert("hi")}>
-                        <Text style={[appStyles.appTextBold, {fontSize: 22}]}>
-                            Ok
-                        </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </Modal>
             <View style={{alignItems: "flex-start"}}>
             <KeyboardAwareScrollView
                 extraScrollHeight={100}>
                 <View style={[appStyles.centerItems, formStyles.formContainer]}>
-                <Text style={[appStyles.appTextBold, formStyles.formTextInputTitle]}>Barcode</Text>
+                <Text style={[appStyles.appTextBold, formStyles.formTextInputTitle]}>
+                    Barcode
+                </Text>
                 <TextInput
                 style={formStyles.formTextInput}
                 placeholder="Ex: 003877698164"
                 returnKeyType="done"
                 onChangeText={(text) => this.updateValue(text, "barcode")}/>
+                <View style={{flexDirection: "row", alignSelf: 'flex-start', alignItems: 'center', marginTop: 5}}>
+                    <Ionicons name={"md-alert"} size={17} color={"#E24747"}/>
+                    <Text style={formStyles.inputError}>This is some dummy error text</Text>
+                </View>
                 <TouchableOpacity
                 style={[appStyles.appButton, formStyles.submit]} 
-                onPress={this.reactToValidation}>
+                onPress={this.validateForm}>
                     <Text style={[appStyles.appTextBold, {fontSize: 20}]}>Submit</Text>
                 </TouchableOpacity>
                 </View>
