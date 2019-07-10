@@ -26,8 +26,42 @@ class ManualEntryForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
+            barcode: '',
         }
+    }
+
+    //MARK: hanlders
+    updateValue = (text, field) => {
+        if (field == "barcode") {
+            this.setState({barcode: text})
+        }
+    }
+
+    validateForm = () => {
+        var errors = {}
+        //check if field is not empty
+        if (this.state.barcode == '') {
+            errors.fieldIsEmpty = 1
+            return errors
+        }
+
+        //check if barcode is a number
+        if (isNaN(Number(this.state.barcode))) {
+            errors.fieldIsNotANumber = 1
+            return errors
+        }
+
+        //check that entry is correct length
+        if (this.state.barcode.length != 12 || this.state.barcode.length != 13) {
+            errors.fieldIsNotABarcode = 1
+            return errors
+        }
+    }
+
+    reactToValidation = () => {
+        validationErrors = this.validateForm()
+        errorsString = JSON.stringify(validationErrors)
+        alert(errorsString)
     }
      
      //MARK: Display
@@ -36,7 +70,7 @@ class ManualEntryForm extends Component {
         <View style={[{padding: 30}, appStyles.centerItems, formStyles.formContainer]}>
             <Text
             style={[appStyles.appTextBold, formStyles.formHeader]}>
-                Enter Product Information Below
+                Enter Product Information
             </Text>
             <Modal isVisible={false}>
                 <View style={[{flex: 1 }, appStyles.centerItems]}>
@@ -55,20 +89,24 @@ class ManualEntryForm extends Component {
                   </View>
                 </View>
               </Modal>
+            <View style={{alignItems: "flex-start"}}>
             <KeyboardAwareScrollView
                 extraScrollHeight={100}>
                 <View style={[appStyles.centerItems, formStyles.formContainer]}>
+                <Text style={[appStyles.appTextBold, formStyles.formTextInputTitle]}>Barcode</Text>
                 <TextInput
                 style={formStyles.formTextInput}
                 placeholder="Ex: 003877698164"
-                returnKeyType="done"/>
+                returnKeyType="done"
+                onChangeText={(text) => this.updateValue(text, "barcode")}/>
                 <TouchableOpacity
                 style={[appStyles.appButton, formStyles.submit]} 
-                onPress={() => alert("you pressed submit!")}>
-                    <Text style={[appStyles.appTextBold, {fontSize: 22}]}>Submit</Text>
+                onPress={this.reactToValidation}>
+                    <Text style={[appStyles.appTextBold, {fontSize: 20}]}>Submit</Text>
                 </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>
+        </View>
         </View>
     )
 }}
