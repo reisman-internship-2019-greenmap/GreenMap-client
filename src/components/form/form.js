@@ -28,7 +28,7 @@ class ManualEntryForm extends Component {
         super(props)
         this.state = {
             barcodeValue: '',
-            barcodeError: ''
+            barcodeError: null
         }
     }
 
@@ -48,12 +48,13 @@ class ManualEntryForm extends Component {
             error = "The barcode must be a number"
         }
 
-        else if (this.state.barcodeValue.length != 12 || this.state.barcodeValue.length != 13) {
+        else if (this.state.barcodeValue.length < 12 | this.state.barcodeValue.length > 13) {
+            console.log(`The input length is ${this.state.barcodeValue.length}`)
             error = "That is not a valid barcode"
         }
        
         this.setState({barcodeError: error}, () => {
-            alert(this.state.barcodeError)
+            console.log(`The error is: ${this.state.barcodeError}`)
         })
 
     }
@@ -78,9 +79,12 @@ class ManualEntryForm extends Component {
                 placeholder="Ex: 003877698164"
                 returnKeyType="done"
                 onChangeText={(text) => this.updateValue(text, "barcode")}/>
-                <View style={{flexDirection: "row", alignSelf: 'flex-start', alignItems: 'center', marginTop: 5}}>
+                <View style={{flexDirection: "row", alignSelf: 'flex-start', alignItems: 'center', marginTop: 5, 
+            opacity: this.state.barcodeError ? 100 : 0}}>
                     <Ionicons name={"md-alert"} size={17} color={"#E24747"}/>
-                    <Text style={formStyles.inputError}>This is some dummy error text</Text>
+                    <Text style={formStyles.inputError}>
+                        {this.state.barcodeError ? this.state.barcodeError : "Some dummy text"}
+                        </Text>
                 </View>
                 <TouchableOpacity
                 style={[appStyles.appButton, formStyles.submit]} 
