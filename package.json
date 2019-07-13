@@ -21,12 +21,10 @@
     "react-native-responsive-dimensions": "^2.0.1",
     "react-navigation": "^3.11.0",
     "react-redux": "^7.0.1",
-    "redux": "^4.0.1",
-    "redux-form": "^8.2.3"
+    "redux": "^4.0.1"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0",
-    "expo-codemod": "^1.0.0"
+    "babel-preset-expo": "^5.0.0"
   },
   "private": true
 }
