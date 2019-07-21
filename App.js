@@ -11,7 +11,11 @@ import * as Font from 'expo-font';
 //components
 import ScannerContainer from './src/containers/scannerContainer';
 import ResultsContainer from './src/containers/resultContainer';
-import FormContainer from './src/containers/formContainer';
+import ManualEntryForm from './src/components/form/form';
+import {headerRightButton, headerBackButton, headerTitle} from './utils/CustomNavBar';
+
+//styling
+import appStyles from './styles/appStyle';
 
 
 
@@ -19,28 +23,28 @@ import FormContainer from './src/containers/formContainer';
 let RootStack = createStackNavigator ({
      ScannerScreen: { 
          screen: ScannerContainer,
-         navigationOptions: {
-             headerTitle: "Scanner"
-        }
     },
 
     ResultsScreen: {
         screen: ResultsContainer,
         navigationOptions: {
-            headerTitle: "Your Results"
+            headerTitle: headerTitle("Results")
         }
-        },
+    },
 
     FormScreen: {
-        screen: FormContainer,
-        navigationOptions: {
-            headerTitle: "Product form"
-        }
+        screen: ManualEntryForm,
     }}, //end screen config
 
     //start navigator config
     {
         initialRouteName: "ScannerScreen",
+        defaultNavigationOptions: {
+            headerStyle: appStyles.headerStyle,
+            headerRight: headerRightButton(),
+            headerBackTitle: null,
+            headerBackImage: headerBackButton()
+        }
     }
 );
 

@@ -4,14 +4,14 @@ import {StyleSheet} from 'react-native'
 export default StyleSheet.create({
     formContainer: {
         flex: 1,
-        backgroundColor: styleVars.colors.tinted_white
+        backgroundColor: styleVars.colors.tinted_white,
     },
 
     formHeader: {
         fontSize:20, 
         color: styleVars.colors.dark_green, 
-        paddingBottom: 30, 
-        textDecorationLine: "underline"
+        paddingBottom: 30,
+        marginTop: 50
     },
 
     formModalTitle: {
@@ -22,10 +22,9 @@ export default StyleSheet.create({
     },
 
     submit: {
-        marginTop: 30, 
-        marginBottom: 20, 
-        paddingLeft: 30, 
-        paddingRight: 30
+        marginTop: 50, 
+        marginBottom: 20,
+        padding: 10
     },
 
     formTextInput: {
@@ -34,6 +33,12 @@ export default StyleSheet.create({
       borderWidth: 1,
       height: 40,
       padding: 10,
+    },
+
+    formTextInputTitle: {
+        color: styleVars.colors.dark_green, 
+        alignSelf: 'flex-start',
+        fontSize: 17
     },
 
     formInputContainer: {
@@ -46,6 +51,7 @@ export default StyleSheet.create({
     inputError: {
         fontSize: 13,
         color: "#E24747",
-        fontWeight: "bold"
+        fontWeight: "bold",
+        marginLeft: 10
     }
 })

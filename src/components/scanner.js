@@ -4,11 +4,17 @@ import {BarCodeScanner} from 'expo-barcode-scanner';
 import * as Permissions from 'expo-permissions';
 import {withNavigation} from 'react-navigation';
 
+import {headerTitle} from '../../utils/CustomNavBar'
+
 import appStyles from '../../styles/appStyle';
 import scannerStyles from '../../styles/scannerStyles';
 
 
 class ScannerScreen extends Component {
+    //MARK: Properties
+    static navigationOptions = {
+        headerTitle: headerTitle("Scanner")
+    }
     
     //MARK: init
     constructor(props){

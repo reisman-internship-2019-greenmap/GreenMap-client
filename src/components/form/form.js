@@ -1,108 +1,102 @@
-import React, {useState} from 'react';
+import React, {Component} from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
     Text,
     TouchableOpacity, 
-    View
+    View,
+    TextInput
 } from 'react-native';
 
-import Modal from 'react-native-modal';
+
 import appStyles from '../../../styles/appStyle';
 import formStyles from '../../../styles/formStyles'
 import styleVars from '../../../styles/styleVars';
 import {Ionicons} from '@expo/vector-icons'
 
-import EntryFormInput from './formInput';
 
-/**
- * @overview
- * Most of this code base is class-based, but the
- * redux form we implement works with functional
- * components. This file's organization is therefore a
- * little different from the other components, but still
- * follows the same logical pattern
- */
 
 //MARK: init
 
 //MARK: Handlers
-const required = value => value ? undefined : "This field is required"
-const isABarcode = value => {
-    if ((Number(value) !== NaN) & (value.length == 12 || value.length == 13)) {
-        return undefined
+class ManualEntryForm extends Component {
+    //MARK: Properties
+    static navigationOptions = {
+        headerTitle: headerTitle("Product Form")
     }
-    return "That is not a valid barcode"//
-}
-
-//MARK: display (plus additional set-up)
-const ManualEntryForm = (props) => {
     
-    //MARK: properties
-    const {handleSubmit} = props;
-    const [modalVisible, modalVisibilityToggle] = useState(false);
-    
-    //MARK: Handlers
-    const submitValues = (values) => {
-        body = JSON.stringify(values);
-        console.log("Inside submitValues");
-        modalVisibilityToggle(!modalVisible);
-        return
+    constructor(props) {
+        super(props)
+        this.state = {
+            barcodeValue: '',
+            barcodeError: null
+        }
+    }
 
-        
-        /*fetch('192.168.1.169:/3000', {
-            method: "POST",
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: values
+    //MARK: hanlders //
+    updateValue = (text, field) => {
+        if (field == "barcode") {
+            this.setState({barcodeValue: text})
+        }
+    }
+
+    validateForm = () => {
+        var error;
+        if (this.state.barcodeValue == '') { 
+            error = "This field is required"
+        }
+        else if (isNaN(Number(this.state.barcodeValue))) {
+            error = "The barcode must be a number"
+        }
+
+        else if (this.state.barcodeValue.length < 12 | this.state.barcodeValue.length > 13) {
+            console.log(`The input length is ${this.state.barcodeValue.length}`)
+            error = "That is not a valid barcode"
+        }
+       
+        this.setState({barcodeError: error}, () => {
+            console.log(`The error is: ${this.state.barcodeError}`)
         })
-        .then(res => res.json())
-        .catch(error => console.log("ERROR: ", error))
-        .then(resJSON => console.log(resJSON)) */
-      }
+
+    }
      
      //MARK: Display
+     render() {
      return (
         <View style={[{padding: 30}, appStyles.centerItems, formStyles.formContainer]}>
             <Text
             style={[appStyles.appTextBold, formStyles.formHeader]}>
-                Enter Product Information Below
+                Enter Product Information
             </Text>
-            <Modal isVisible={modalVisible}>
-                <View style={[{flex: 1 }, appStyles.centerItems]}>
-                  <View style={[{backgroundColor:"white"}, appStyles.centerItems]}>
-                      <Text style={[appStyles.appTextBold, formStyles.formModalTitle]}>
-                          Submitted!
-                        </Text>
-                      <Ionicons name="md-checkbox-outline" size={90} color="#CCCCCC" />
-                      <TouchableOpacity
-                        style={[appStyles.appButton, formStyles.submit, {backgroundColor: styleVars.colors.light_green}]} 
-                        onPress={() => modalVisibilityToggle(!modalVisible)}>
-                        <Text style={[appStyles.appTextBold, {fontSize: 22}]}>
-                            Ok
-                        </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </Modal>
+            <View style={{alignItems: "flex-start"}}>
             <KeyboardAwareScrollView
                 extraScrollHeight={100}>
                 <View style={[appStyles.centerItems, formStyles.formContainer]}>
-                <EntryFormInput 
-                    title="Barcode Number" 
-                    fieldName="barcode"
-                    placeholder="Ex: 0039800079305"
-                    validate={[required, isABarcode]}/>
+                <Text style={[appStyles.appTextBold, formStyles.formTextInputTitle]}>
+                    Barcode
+                </Text>
+                <TextInput
+                style={formStyles.formTextInput}
+                placeholder="Ex: 003877698164"
+                returnKeyType="done"
+                onChangeText={(text) => this.updateValue(text, "barcode")}/>
+                <View style={{flexDirection: "row", alignSelf: 'flex-start', alignItems: 'center', marginTop: 5, 
+            opacity: this.state.barcodeError ? 100 : 0}}>
+                    <Ionicons name={"md-alert"} size={17} color={"#E24747"}/>
+                    <Text style={formStyles.inputError}>
+                        {this.state.barcodeError ? this.state.barcodeError : "Some dummy text"}
+                        </Text>
+                </View>
                 <TouchableOpacity
                 style={[appStyles.appButton, formStyles.submit]} 
-                onPress={handleSubmit(submitValues)}>
-                    <Text style={[appStyles.appTextBold, {fontSize: 22}]}>Submit</Text>
+                onPress={this.validateForm}>
+                    <Text style={[appStyles.appTextBold, {fontSize: 20}]}>Submit</Text>
                 </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>
         </View>
+        </View>
     )
-}//
+}}
 
 
 export default ManualEntryForm

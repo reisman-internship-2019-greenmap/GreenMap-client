@@ -3,19 +3,9 @@ import { View, Text, StyleSheet, Dimensions, PixelRatio, FlatList } from 'react-
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import {ListItem, Avatar} from 'react-native-elements';
 import {PropTypes} from 'prop-types';
+import {headerTitle} from '../../utils/CustomNavBar'
 
-/**
- * @overview
- * One of ResultSuccess or ResultFailure is displayed
- * The success/failure views are children of ResultHandler
- * ResultHandler is a child of ResultView, the parent component
- */
 
- /**
-  * @temp
-  * the top three results are being hard-coded for now.
-  * Eventually they will be retreived from the server
-  */
 
 var topThree = [
     {

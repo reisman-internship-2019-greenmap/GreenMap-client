@@ -28,5 +28,10 @@ export default StyleSheet.create({
     centerItems: {
         alignItems: "center",
         justifyContent: "center"
+    },
+
+    headerStyle: {
+        backgroundColor: styleVars.colors.dark_green,
+        borderBottomWidth: 0
     }
 })
