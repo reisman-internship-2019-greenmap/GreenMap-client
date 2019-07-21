@@ -1,4 +1,4 @@
 import {connect} from 'react-redux';
-import ManualEntryForm from '../components/form/form';
+import ManualEntryForm from './Form';
 
 export default FormContainer = connect()(ManualEntryForm);

@@ -1,5 +1,5 @@
-import styleVars from './styleVars'
-import {StyleSheet} from 'react-native'
+import styleVars from '../../globals/styles/StyleVars';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
     formContainer: {

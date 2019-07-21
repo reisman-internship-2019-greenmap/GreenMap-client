@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 
 
-import appStyles from '../../../styles/appStyle';
-import formStyles from '../../../styles/formStyles'
-import styleVars from '../../../styles/styleVars';
+import AppStyles from '../../globals/styles/AppStyle';
+import FormStyles from './FormStyles';
+
 import {Ionicons} from '@expo/vector-icons'
 
 
@@ -49,13 +49,12 @@ class ManualEntryForm extends Component {
         }
 
         else if (this.state.barcodeValue.length < 12 | this.state.barcodeValue.length > 13) {
-            console.log(`The input length is ${this.state.barcodeValue.length}`)
             error = "That is not a valid barcode"
         }
        
         this.setState({barcodeError: error}, () => {
             console.log(`The error is: ${this.state.barcodeError}`)
-            if (this.setState.barcodeError == null) {
+            if (this.state.barcodeError == null) {
                 fetch(`https://greenmap.herokuapp.com/${this.state.barcodeValue}`)
                 .then((res) => res.json())
                 .catch(error => console.log('Error: ', error))
@@ -64,7 +63,6 @@ class ManualEntryForm extends Component {
                         this.props.dispatch({type: "RESULT_ERROR"});
                     }
                     else {
-                        console.log('in else block in scanner.js');
                         this.props.dispatch({type: "UPDATE_RESULT", result: resJSON.doc});
                     }
                 }) //end server communication
@@ -76,34 +74,34 @@ class ManualEntryForm extends Component {
      //MARK: Display
      render() {
      return (
-        <View style={[{padding: 30}, appStyles.centerItems, formStyles.formContainer]}>
+        <View style={[{padding: 30}, AppStyles.centerItems, FormStyles.formContainer]}>
             <Text
-            style={[appStyles.appTextBold, formStyles.formHeader]}>
+            style={[AppStyles.appTextBold, FormStyles.formHeader]}>
                 Enter Product Information
             </Text>
             <View style={{alignItems: "flex-start"}}>
             <KeyboardAwareScrollView
                 extraScrollHeight={100}>
-                <View style={[appStyles.centerItems, formStyles.formContainer]}>
-                <Text style={[appStyles.appTextBold, formStyles.formTextInputTitle]}>
+                <View style={[AppStyles.centerItems, FormStyles.formContainer]}>
+                <Text style={[AppStyles.appTextBold, FormStyles.formTextInputTitle]}>
                     Barcode
                 </Text>
                 <TextInput
-                style={formStyles.formTextInput}
+                style={FormStyles.formTextInput}
                 placeholder="Ex: 003877698164"
                 returnKeyType="done"
                 onChangeText={(text) => this.updateValue(text, "barcode")}/>
                 <View style={{flexDirection: "row", alignSelf: 'flex-start', alignItems: 'center', marginTop: 5, 
             opacity: this.state.barcodeError ? 100 : 0}}>
                     <Ionicons name={"md-alert"} size={17} color={"#E24747"}/>
-                    <Text style={formStyles.inputError}>
+                    <Text style={FormStyles.inputError}>
                         {this.state.barcodeError ? this.state.barcodeError : "Some dummy text"}
                         </Text>
                 </View>
                 <TouchableOpacity
-                style={[appStyles.appButton, formStyles.submit]} 
+                style={[AppStyles.appButton, FormStyles.submit]} 
                 onPress={this.validateForm}>
-                    <Text style={[appStyles.appTextBold, {fontSize: 20}]}>Submit</Text>
+                    <Text style={[AppStyles.appTextBold, {fontSize: 20}]}>Submit</Text>
                 </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>

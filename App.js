@@ -1,22 +1,25 @@
-//import from node_modules
+//modules
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 
-//redux stuff
+//redux
 import store from './src/redux/store/store';
 import {Provider} from 'react-redux';
 import * as Font from 'expo-font';
 
 //components
-import ScannerContainer from './src/containers/scannerContainer';
-import ResultsContainer from './src/containers/resultContainer';
-import FormContainer from './src/containers/formContainer';
-//import ManualEntryForm from './src/components/form/form';
-import {headerRightButton, headerBackButton, headerTitle} from './utils/CustomNavBar';
+import ScannerContainer from './src/components/Scanner/ScannerContainer';
+import ResultsContainer from './src/components/Results/ResultContainer';
+import FormContainer from './src/components/Form/FormContainer';
+import {
+    headerRightButton, 
+    headerBackButton, 
+    headerTitle
+} from './src/components/NavigationHeader/NavigationHeader';
 
 //styling
-import appStyles from './styles/appStyle';
+import AppStyles from './src/globals/styles/AppStyle';
 
 
 
@@ -41,7 +44,7 @@ let RootStack = createStackNavigator ({
     {
         initialRouteName: "ScannerScreen",
         defaultNavigationOptions: {
-            headerStyle: appStyles.headerStyle,
+            headerStyle: AppStyles.headerStyle,
             headerRight: headerRightButton(),
             headerBackTitle: null,
             headerBackImage: headerBackButton()

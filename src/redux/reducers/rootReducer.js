@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
-import ScannerReducer from './scannerReducer';
-import ResultReducer from './resultReducer';
+import ScannerReducer from '../../components/Scanner/ScannerReducer';
+import ResultReducer from '../../components/Results/ResultReducer';
 
 const RootReducer = combineReducers({
     ScannerInfo: ScannerReducer,

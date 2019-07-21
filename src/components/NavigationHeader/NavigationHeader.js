@@ -3,8 +3,8 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faLeaf, faBars, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
-import navBarStyles from '../styles/navBarStyles';
-import appStyles from '../styles/appStyle'
+import navBarStyles from './HeaderStyles';
+import appStyles from '../../globals/styles/AppStyle'
 
 headerTitle = (title) => {
     return (

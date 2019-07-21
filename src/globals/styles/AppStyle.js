@@ -2,7 +2,7 @@
 
 
 import {StyleSheet} from 'react-native';
-import styleVars from './styleVars'
+import styleVars from './StyleVars'
 
 export default StyleSheet.create({
     appButton: {
