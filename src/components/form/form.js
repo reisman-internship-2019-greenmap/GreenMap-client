@@ -55,8 +55,22 @@ class ManualEntryForm extends Component {
        
         this.setState({barcodeError: error}, () => {
             console.log(`The error is: ${this.state.barcodeError}`)
+            if (this.setState.barcodeError == null) {
+                fetch(`https://greenmap.herokuapp.com/${this.state.barcodeValue}`)
+                .then((res) => res.json())
+                .catch(error => console.log('Error: ', error))
+                .then((resJSON) => {
+                    if (!resJSON.doc) {
+                        this.props.dispatch({type: "RESULT_ERROR"});
+                    }
+                    else {
+                        console.log('in else block in scanner.js');
+                        this.props.dispatch({type: "UPDATE_RESULT", result: resJSON.doc});
+                    }
+                }) //end server communication
+            this.props.navigation.navigate("ResultsScreen");
+            }
         })
-
     }
      
      //MARK: Display

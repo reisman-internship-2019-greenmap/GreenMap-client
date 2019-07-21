@@ -11,7 +11,8 @@ import * as Font from 'expo-font';
 //components
 import ScannerContainer from './src/containers/scannerContainer';
 import ResultsContainer from './src/containers/resultContainer';
-import ManualEntryForm from './src/components/form/form';
+import FormContainer from './src/containers/formContainer';
+//import ManualEntryForm from './src/components/form/form';
 import {headerRightButton, headerBackButton, headerTitle} from './utils/CustomNavBar';
 
 //styling
@@ -33,7 +34,7 @@ let RootStack = createStackNavigator ({
     },
 
     FormScreen: {
-        screen: ManualEntryForm,
+        screen: FormContainer,
     }}, //end screen config
 
     //start navigator config

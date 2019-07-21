@@ -17,11 +17,10 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-elements": "^1.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
-    "react-native-modal": "^11.0.2",
     "react-native-responsive-dimensions": "^2.0.1",
-    "react-navigation": "^3.11.0",
+    "react-navigation": "^3.11.1",
     "react-redux": "^7.0.1",
-    "redux": "^4.0.1"
+    "redux": "^4.0.4"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
