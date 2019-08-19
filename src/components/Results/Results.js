@@ -51,6 +51,23 @@ var topThree = [
       }
   ]
 
+// If the server hasn't responded yet, resultDoc is undefined
+// If the server has responded with an error, resultDoc contains
+//      a single field called "name" which is set to "undefined"
+// If the server has responded with a success, resultDoc contains
+//      the response data
+// I know this is confusing garbage, this component and its reducer
+// will be re-factored at some point
+class ResultsView extends Component {
+  render() {
+      return (
+          <View style={{flex:1, justifyContent: "center"}}>
+              {this.props.resultDoc ? <ResultHandler result={this.props.resultDoc}/> :
+          <Text style={styles.text}>Loading Results</Text>}
+          </View>
+      )}
+}
+
 class ResultHandler extends Component {
     static propTypes = {
         result: PropTypes.object.isRequired
@@ -126,16 +143,7 @@ class ResultFailure extends Component {
     }
 }
 
-export default class ResultsView extends Component {
-
-    render() {
-        return (
-            <View style={{flex:1, justifyContent: "center"}}>
-                {this.props.resultDoc ? <ResultHandler result={this.props.resultDoc}/> :
-            <Text style={styles.text}>Loading Results</Text>}
-            </View>
-        )}
-}
+export default ResultsView 
 
 const styles = StyleSheet.create({
     container: {

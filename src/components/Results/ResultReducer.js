@@ -1,25 +1,22 @@
 //TODO: barcodeMiss and wikiMiss should be one screen
 
 const initialState = {
-    didWikiMiss: 0,
-    didBarcodeMiss: 0,
     statusCode: null,
-    result: null,
+    result: null
 }
 
 
 const serverResponseReducer = (state=initialState.result, action) => {
     switch (action.type) {
         case "UPDATE_RESULT":
-            obj = JSON.stringify(action.result)
+            //returns the contents of "doc" from the server
             return action.result
 
         case "RESULT_ERROR":
-            //the name should be "undefined" but I'm hardcoding
-            //it for now while I work on the "result success" screen
+            // returns a string indicating to the Results component
+            // that there was an error
             return ({
-                name: "Manufacturer - Cool Product X54H",
-                barcode: "nope"
+                name: "undefined",
             })
         
         default:

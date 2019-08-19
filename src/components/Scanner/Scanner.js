@@ -63,17 +63,23 @@ class ScannerScreen extends Component {
       else if (this.props.onScanCalls == 5) {
         this.setState({onBarcodeScan: undefined}, () => {
                 //once the scanning function is shut off, talk to the server
-                fetch(`https://greenmap.herokuapp.com/${this.props.barcodeData}`)
-                .then((res) => res.json())
-                .catch(error => console.log('Error: ', error))
+                fetch(`https://greenmap.herokuapp.com/0886111601387`)
+                .then((res) => {
+                    console.log(res)
+                    console.log(`The status code is ${res.status}`)
+                    return res.json()
+                })
                 .then((resJSON) => {
                     if (!resJSON.doc) {
                         this.props.dispatch({type: "RESULT_ERROR"});
                     }
                     else {
+                        console.log(resJSON.doc)
                         this.props.dispatch({type: "UPDATE_RESULT", result: resJSON.doc});
                     }
-                }) //end server communication
+                })
+                .catch(error => console.log('Error: ', error)) 
+                //end server communication
             this.props.navigation.navigate("ResultsScreen");
             }) //end setState callback
         return
