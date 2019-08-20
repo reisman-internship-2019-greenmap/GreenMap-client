@@ -68,26 +68,8 @@ class ResultsView extends Component {
       )}
 }
 
-class ResultHandler extends Component {
-    static propTypes = {
-        result: PropTypes.object.isRequired
-    }
-
-    render() {
-        return (
-        <View style={styles.container}>
-            {this.props.result.name == "undefined" ? <ResultFailure /> :
-          <ResultSuccess result={this.props.result} /> }
-        </View>
-    )}
-}
-
-class ResultSuccess extends Component {
-    static propTypes = {
-        result: PropTypes.object.isRequired
-    }
-
-    renderTopThree = ({item}) => {
+const ResultSuccess = ({props}) => {
+    const renderTopThree = ({item}) => {
         return (
             <ListItem
               containerStyle={{backgroundColor: "#EFEFEF"}}
@@ -97,51 +79,46 @@ class ResultSuccess extends Component {
               subtitle={ `${item.manufacturer}` }
               />
           )
-    }
+    } //end renderTopThree
 
-    renderItemSeparator = () => (
+    const renderItemSeparator = () => (
         <View
             style={{
                 backgroundColor: "white",
                 height: 1
             }}
         />
+    ) //end renderItemSeperator
+
+    const _keyExtractor = (item, index) => item.id;
+
+    return (
+        <View style={styles.subView}>
+            <Text style={styles.mainRes}>1.75</Text>
+            <Text style={styles.usrProduct}>{props.result.name}</Text>
+            <Text style={[styles.mainRes, styles.listHeading]}>
+                Top in this category
+            </Text>
+            <FlatList
+            style={styles.topThreeList} 
+            data={topThree}
+            renderItem={renderTopThree}
+            keyExtractor={_keyExtractor}
+            ItemSeparatorComponent={renderItemSeparator}
+            />
+        </View>
     )
+} //end ResultSuccess
 
-    /**
-     * @helper
-     * _keyExtractor tells the FlatList component which field
-     * of the result should serve as a unique identifier */
-    _keyExtractor = (item, index) => item.id;
 
-    render() {
-        return (
-            <View style={styles.subView}>
-                <Text style={styles.mainRes}>1.75</Text>
-                <Text style={styles.usrProduct}>{this.props.result.name}</Text>
-                <Text style={[styles.mainRes, styles.listHeading]}>
-                    Top in this category
-                </Text>
-                <FlatList
-                style={styles.topThreeList} 
-                data={topThree}
-                renderItem={this.renderTopThree}
-                keyExtractor={this._keyExtractor}
-                ItemSeparatorComponent={this.renderItemSeparator}
-                />
-            </View>
-        )}
-}
+const ResultFailure = () => {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.text}>No results returned</Text>
+        </View>
+    )
+} 
 
-class ResultFailure extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.text}>No results returned</Text>
-            </View>
-        )
-    }
-}
 
 export default ResultsView 
 

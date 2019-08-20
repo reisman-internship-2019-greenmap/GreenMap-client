@@ -65,29 +65,22 @@ class ScannerScreen extends Component {
       //if this condition is met then the barcode is valid
       else if (this.props.onScanCalls == 5) {
         this.setState({onBarcodeScan: undefined}, () => {
-                //once the scanning function is shut off, talk to the server
-                fetch(`https://greenmap.herokuapp.com/0886111601387`)
-                .then((res) => {
-                    console.log(res)
-                    console.log(`The status code is ${res.status}`)
-                    return res.json()
-                })
-                .then((resJSON) => {
-                    if (!resJSON.doc) {
-                        this.props.dispatch({type: "RESULT_ERROR"});
-                    }
-                    else {
-                        console.log(resJSON.doc)
-                        console.log(`The status code is still ${resJSON.status}`);
-                        this.props.dispatch({type: "UPDATE_RESULT", result: resJSON.doc});
-
-                        //get the top 5 manufacturers
-                    }
-                })
-                .catch(error => console.log('Error: ', error)) 
-                //end server communication
+            console.log("setState callback")
+            //once the scanning function is shut off, talk to the server
+            //DON'T FORGET TO DISPATCH SHIT
+            getProductInfo(this.props.barcodeData)
+            .then(doc => {
+                console.log(`doc is ${doc}`)
+                this.props.dispatch({type: "UPDATE RESULT", result: doc})
+            })
+            .catch(error => {
+                console.log("Hello I am scanner and the promise got rejected")
+                this.props.dispatch({type: "RESULT ERROR"})
+            })
+        
+            //no matter what the response, navigate to results
             this.props.navigation.navigate("ResultsScreen");
-            }) //end setState callback
+        }) //end setState callback
         return
       } //end else if
 

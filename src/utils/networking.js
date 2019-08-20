@@ -1,6 +1,7 @@
 const fetch = require('node-fetch')
 
 let getProductInfo = (barcode) => {
+    console.log("getProductInfo was called")
     return new Promise((resolve, reject) => {
         fetch(`https://greenmap.herokuapp.com/${barcode}`)
         .then(res => {
@@ -8,10 +9,14 @@ let getProductInfo = (barcode) => {
         return res.json()
     }) //end .then()
     .then(resJSON => {
+        console.log("The promise resolved")
         resolve(resJSON)
         //make second api call
         }) //end then
-    .catch(err => reject(err))
+    .catch(err => {
+        console.log("The promise rejected")
+        reject(err)
+    })
     }) //end Promise
 } //end func
 
