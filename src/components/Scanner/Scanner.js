@@ -4,8 +4,11 @@ import {BarCodeScanner} from 'expo-barcode-scanner';
 import * as Permissions from 'expo-permissions';
 import {withNavigation} from 'react-navigation';
 
+//utility functions
 import {headerTitle} from '../NavigationHeader/NavigationHeader'
+import getProductInfo from '../../utils/networking'
 
+//styles
 import AppStyles from '../../globals/styles/AppStyle';
 import ScannerStyles from './ScannerStyles';
 
@@ -75,7 +78,10 @@ class ScannerScreen extends Component {
                     }
                     else {
                         console.log(resJSON.doc)
+                        console.log(`The status code is still ${resJSON.status}`);
                         this.props.dispatch({type: "UPDATE_RESULT", result: resJSON.doc});
+
+                        //get the top 5 manufacturers
                     }
                 })
                 .catch(error => console.log('Error: ', error)) 
