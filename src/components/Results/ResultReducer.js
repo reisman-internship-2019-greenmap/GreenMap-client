@@ -1,18 +1,22 @@
+
+
 //TODO: barcodeMiss and wikiMiss should be one screen
 
 const initialState = {
     statusCode: null,
-    result: null
+    result: "none recieved yet"
 }
 
 
 const serverResponseReducer = (state=initialState.result, action) => {
     switch (action.type) {
         case "UPDATE_RESULT":
+            console.log("got a result")
             //returns the contents of "doc" from the server
             return action.result
 
         case "RESULT_ERROR":
+            console.log("got a result error")
             // returns a string indicating to the Results component
             // that there was an error
             return ({
@@ -26,12 +30,6 @@ const serverResponseReducer = (state=initialState.result, action) => {
 
 const ResultReducer = (state=initialState, action) => {
     switch(action.type) {
-        case "RENDER_WIKIMISS_SCREEN":
-            return {...state, didWikiMiss: wikiReducer(state.didWikiMiss, action)}
-        
-        case "RENDER_BARCODEMISS_SCREEN":
-            return{...state, didBarcodeMiss: barcodeReducer(state.didBarcodeMiss, action)}
-
         case "UPDATE_RESULT":
             return{...state, result: serverResponseReducer(state.result, action)}
 

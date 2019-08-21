@@ -57,16 +57,23 @@ var topThree = [
 // If the server has responded with a success, resultDoc contains
 //      the response data
 // I know this is confusing garbage, this component and its reducer
-// will be re-factored at some point
+// will be re-factored at some point/
+
 class ResultsView extends Component {
   render() {
       return (
           <View style={{flex:1, justifyContent: "center"}}>
-              {this.props.resultDoc ? <ResultHandler result={this.props.resultDoc}/> :
-          <Text style={styles.text}>Loading Results</Text>}
-          </View>
+              {this.props.resultDoc.name === "undefined" ? 
+              <ResultFailure/> :
+              this.props.resultDoc === "none recieved yet" ?
+              <View><Text style={styles.text}>Loading results</Text></View> :
+              <ResultSuccess result={this.props.resultDoc} /> 
+              }
+            </View>
       )}
 }
+
+
 
 const ResultSuccess = ({props}) => {
     const renderTopThree = ({item}) => {

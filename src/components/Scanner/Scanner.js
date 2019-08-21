@@ -71,11 +71,11 @@ class ScannerScreen extends Component {
             getProductInfo(this.props.barcodeData)
             .then(doc => {
                 console.log(`doc is ${doc}`)
-                this.props.dispatch({type: "UPDATE RESULT", result: doc})
+                this.props.dispatch({type: "UPDATE_RESULT", result: doc})
             })
             .catch(error => {
                 console.log("Hello I am scanner and the promise got rejected")
-                this.props.dispatch({type: "RESULT ERROR"})
+                this.props.dispatch({type: "RESULT_ERROR"})
             })
         
             //no matter what the response, navigate to results
