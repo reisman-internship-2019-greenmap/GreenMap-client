@@ -80,15 +80,17 @@ class ScannerScreen extends Component {
             console.log("setState callback")
             //once the scanning function is shut off, talk to the server
             getProductInfo(this.props.barcodeData)
-            .then(doc => {
-                console.log(`doc is ${doc}`)
-                this.props.dispatch({type: "UPDATE_RESULT", result: doc})
+            .then((res) => {
+                if (res === "the connection timed out") {
+                    this.props.dispatch({type: "RESULT_ERROR", payload: res})
+                }
+                console.log(`res is ${res}`)
+                this.props.dispatch({type: "UPDATE_RESULT", result: res})
             })
-            .catch(error => {
-                console.log("Hello I am scanner and the promise got rejected")
-                this.props.dispatch({type: "RESULT_ERROR"})
+            .catch((err) => {
+                console.log(`in scanner, err is ${err}`)
+                this.props.dispatch({type: "RESULT_ERROR", payload: err})
             })
-        
             //no matter what the response, navigate to results
             this.props.navigation.navigate("ResultsScreen");
         }) //end setState callback

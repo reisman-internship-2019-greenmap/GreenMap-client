@@ -10,8 +10,8 @@ class ResultsView extends Component {
   render() {
       return (
           <View style={{flex:1, justifyContent: "center"}}>
-              {this.props.resultDoc.name === "undefined" ? 
-              <ResultFailure/> :
+              { !isNaN(this.props.resultDoc) ? 
+              <ResultFailure statusCode={this.props.resultDoc}/> :
               this.props.resultDoc === "none recieved yet" ?
               <View><Text style={styles.text}>Loading results</Text></View> :
               <ResultSuccess result={this.props.resultDoc} /> 
@@ -20,10 +20,11 @@ class ResultsView extends Component {
       )}
 }
 
-const ResultFailure = () => {
+const ResultFailure = (props) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>No results returned</Text>
+            <Text style={styles.text}>Oops!</Text>
+            <Text>The server returned a status code of {props.statusCode}</Text>
         </View>
     )
 }

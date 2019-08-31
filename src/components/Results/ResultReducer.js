@@ -1,5 +1,6 @@
 
 
+
 //TODO: barcodeMiss and wikiMiss should be one screen
 
 const initialState = {
@@ -55,15 +56,14 @@ const hardCodedResult = {
 const serverResponseReducer = (state=initialState.result, action) => {
     switch (action.type) {
         case "UPDATE_RESULT":
+            console.log("got a result")
             //returns the contents of "doc" from the server
             return action.result
 
         case "RESULT_ERROR":
-            // returns a string indicating to the Results component
-            // that there was an error
-            return ({
-                name: "undefined",
-            })
+            console.log(action.payload.message)
+            console.log(typeof action.payload.message)
+            return action.payload.message
 
         case "HARDCODE_SUCCESS":
             return hardCodedResult
