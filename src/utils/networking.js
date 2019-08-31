@@ -5,27 +5,33 @@ const getProductInfo = (barcode) => {
     // wraps the fetch call in a promise that resolves with
     // a successful query (Status code is 200-299)
     // Rejects if the status code is not 200-299
-    var responsePromise = new Promise ((resolve, reject) => {
-        fetch(`https://greenmap.herokuapp.com/${barcode}`)
-            .then(res => {
-                if (!res.ok) throw Error(res.status)
-            return res.json()
-        }) //end .then()
-        .then(resJSON => {
-            console.log("The promise resolved")
-            resolve(resJSON)
-            }) //end then
-        .catch(err => {
-            console.log("The promise rejected")
-            reject(err)
-        })
-    })
+
+    //var responsePromise = new Promise ((resolve, reject) => {
+    //    fetch(`https://greenmap.herokuapp.com/${barcode}`)
+    //        .then(res => {
+    //            if (!res.ok) throw Error(res.status)
+    //        return res.json()
+    //    }) //end .then()
+    //    .then(resJSON => {
+    //        console.log("The promise resolved")
+    //        resolve(resJSON)
+    //        }) //end then
+    //    .catch(err => {
+    //        console.log("The promise rejected")
+    //        reject(err)
+    //    })
+    //})
 
     // A simple Prosmise that resolves after 5 seconds.
     // When passed to Promise.race, this promise will resolve
     // if the server does not send a response within 5 seconds.
     var connectionTimeoutPromise = new Promise ((reject) => {
         setTimeout(reject, 5000, "The connection timed out")
+    })
+
+    //for mocking a slow server - testing only
+    var dummySlowPromise = new Promise ((resolve) => {
+        setTimeout(resolve, 6000, "Dummy slow promise")
     })
 
 
@@ -41,6 +47,6 @@ const getProductInfo = (barcode) => {
      * the server responds with a success.
     */
 
-    return Promise.race([responsePromise, connectionTimeoutPromise])
+    return Promise.race([dummySlowPromise, connectionTimeoutPromise])
 }
 export default getProductInfo

@@ -8,10 +8,13 @@ import {ListItem, Avatar} from 'react-native-elements';
 
 class ResultsView extends Component {
   render() {
+      console.log(`In results and result is ${this.props.resultDoc}`)
       return (
           <View style={{flex:1, justifyContent: "center"}}>
               { !isNaN(this.props.resultDoc) ? 
               <ResultFailure statusCode={this.props.resultDoc}/> :
+              this.props.resultDoc == "The connection timed out" ?
+              <View><Text>The connection timed out</Text></View> :
               this.props.resultDoc === "none recieved yet" ?
               <View><Text style={styles.text}>Loading results</Text></View> :
               <ResultSuccess result={this.props.resultDoc} /> 

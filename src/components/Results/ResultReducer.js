@@ -57,6 +57,7 @@ const serverResponseReducer = (state=initialState.result, action) => {
     switch (action.type) {
         case "UPDATE_RESULT":
             console.log("got a result")
+            console.log(`and that result is ${action.result}`)
             //returns the contents of "doc" from the server
             return action.result
 
