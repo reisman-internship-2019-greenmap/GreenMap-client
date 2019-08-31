@@ -12,6 +12,15 @@ import getProductInfo from '../../utils/networking'
 import AppStyles from '../../globals/styles/AppStyle';
 import ScannerStyles from './ScannerStyles';
 
+//NOTE ABOUT REDUX:
+/*the onScan() function shouldn't have to manage
+the call tracker and barcode data through redux, 
+but the automatic repeative calls to that function 
+by the third-party scanner make it very difficult to
+direct onScan()'s flow via a local state. setState() will 
+not always finish before the next call, but the action 
+dispatches will.*/
+
 
 class ScannerScreen extends Component {
     //MARK: Properties
@@ -29,6 +38,8 @@ class ScannerScreen extends Component {
 
     }
     
+    // resets the scanner when screen is focused and
+    // shuts off the scanner when screen is blurred
     async componentDidMount() {
         this._requestCameraPermission();
         this.focusListener = this.props.navigation.addListener("willFocus", () => {
@@ -54,6 +65,7 @@ class ScannerScreen extends Component {
 
 
   _onScan = (scan) => {
+      // increases this.props.onScanCalls by 1
       this.props.dispatch({type: "UPDATE_CALL_TRACKER"});
       
       //set initial read
@@ -67,7 +79,6 @@ class ScannerScreen extends Component {
         this.setState({onBarcodeScan: undefined}, () => {
             console.log("setState callback")
             //once the scanning function is shut off, talk to the server
-            //DON'T FORGET TO DISPATCH SHIT
             getProductInfo(this.props.barcodeData)
             .then(doc => {
                 console.log(`doc is ${doc}`)
@@ -94,7 +105,7 @@ class ScannerScreen extends Component {
       }
       
       console.log(`barcodeData: ${this.props.barcodeData}`);
-}
+  }
     
   goToForm = () => {
       this.props.navigation.navigate("FormScreen");

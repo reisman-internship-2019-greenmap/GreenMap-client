@@ -2,62 +2,9 @@ import React, {Component} from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import {responsiveFontSize, responsiveWidth} from 'react-native-responsive-dimensions';
 import {ListItem, Avatar} from 'react-native-elements';
-import {PropTypes} from 'prop-types';
 
 
 
-var topThree = [
-    {
-      id: "randomstring1",
-      product: "Toshiba AbC 123",
-      avTitle: "Ts",
-      manufacturer: "Toshiba",
-      esg: 9.87
-    },
-    {
-      id: "randomstring2",
-      product: "Acer D45 Pro",
-      avTitle: "Ac",
-      manufacturer: "Acer",
-      esg: 6.54
-    },
-    {
-      id: "randomstring3",
-      product: "Macbook",
-      avTitle: "Ap",
-      manufacturer: "Apple",
-      esg: 3.21
-    },
-    {
-        id: "randomstring4",
-        product: "Toshiba AbC 123",
-        avTitle: "Ts",
-        manufacturer: "Toshiba",
-        esg: 9.87
-      },
-      {
-        id: "randomstring5",
-        product: "Acer D45 Pro",
-        avTitle: "Ac",
-        manufacturer: "Acer",
-        esg: 6.54
-      },
-      {
-        id: "randomstring6",
-        product: "Macbook",
-        avTitle: "Ap",
-        manufacturer: "Apple",
-        esg: 3.21
-      }
-  ]
-
-// If the server hasn't responded yet, resultDoc is undefined
-// If the server has responded with an error, resultDoc contains
-//      a single field called "name" which is set to "undefined"
-// If the server has responded with a success, resultDoc contains
-//      the response data
-// I know this is confusing garbage, this component and its reducer
-// will be re-factored at some point/
 
 class ResultsView extends Component {
   render() {
@@ -73,9 +20,52 @@ class ResultsView extends Component {
       )}
 }
 
+const ResultFailure = () => {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.text}>No results returned</Text>
+        </View>
+    )
+}
 
-
-const ResultSuccess = ({props}) => {
+const ResultSuccess = (props) => {
+    var topThree = [
+        {
+          id: "randomstring1",
+          product: "Toshiba AbC 123",
+          avTitle: "Ts",
+          manufacturer: "Toshiba",
+          esg: 9.87
+        },
+        {
+          id: "randomstring2",
+          product: "Acer D45 Pro",
+          avTitle: "Ac",
+          manufacturer: "Acer",
+          esg: 6.54
+        },
+        {
+          id: "randomstring3",
+          product: "Macbook",
+          avTitle: "Ap",
+          manufacturer: "Apple",
+          esg: 3.21
+        },
+        {
+            id: "randomstring4",
+            product: "Toshiba AbC 123",
+            avTitle: "Ts",
+            manufacturer: "Toshiba",
+            esg: 9.87
+          },
+          {
+            id: "randomstring5",
+            product: "Acer D45 Pro",
+            avTitle: "Ac",
+            manufacturer: "Acer",
+            esg: 6.54
+        }
+    ]
     const renderTopThree = ({item}) => {
         return (
             <ListItem
@@ -101,8 +91,10 @@ const ResultSuccess = ({props}) => {
 
     return (
         <View style={styles.subView}>
-            <Text style={styles.mainRes}>1.75</Text>
-            <Text style={styles.usrProduct}>{props.result.name}</Text>
+            {props.result.doc.ESG !== null ? 
+             <Text style={styles.mainRes}>{props.result.doc.ESG}</Text> :
+             <Text style={styles.notFound}>ESG not found</Text>}
+            <Text style={styles.usrProduct}>{props.result.doc.name}</Text>
             <Text style={[styles.mainRes, styles.listHeading]}>
                 Top in this category
             </Text>
@@ -116,16 +108,6 @@ const ResultSuccess = ({props}) => {
         </View>
     )
 } //end ResultSuccess
-
-
-const ResultFailure = () => {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>No results returned</Text>
-        </View>
-    )
-} 
-
 
 export default ResultsView 
 
@@ -152,6 +134,13 @@ const styles = StyleSheet.create({
         fontSize: responsiveFontSize(10),
         fontFamily: "Raleway-Extra-Bold",
         color: "#58B34D",
+        paddingBottom: 10,
+    },
+
+    notFound: {
+        fontSize: responsiveFontSize(5),
+        fontFamily: "Raleway-Extra-Bold",
+        color: "#E24747",
         paddingBottom: 10,
     },
     

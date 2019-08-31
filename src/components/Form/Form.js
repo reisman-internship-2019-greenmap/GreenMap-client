@@ -12,6 +12,7 @@ import AppStyles from '../../globals/styles/AppStyle';
 import FormStyles from './FormStyles';
 
 import {Ionicons} from '@expo/vector-icons'
+import getProductInfo from '../../utils/networking';
 
 
 
@@ -55,18 +56,19 @@ class ManualEntryForm extends Component {
         this.setState({barcodeError: error}, () => {
             console.log(`The error is: ${this.state.barcodeError}`)
             if (this.state.barcodeError == null) {
-                fetch(`https://greenmap.herokuapp.com/${this.state.barcodeValue}`)
-                .then((res) => res.json())
-                .catch(error => console.log('Error: ', error))
-                .then((resJSON) => {
-                    if (!resJSON.doc) {
-                        this.props.dispatch({type: "RESULT_ERROR"});
-                    }
-                    else {
-                        this.props.dispatch({type: "UPDATE_RESULT", result: resJSON.doc});
-                    }
-                }) //end server communication
-            this.props.navigation.navigate("ResultsScreen");
+                getProductInfo(this.state.barcodeValue)
+                .then(doc => {
+                    console.log(`doc is ${JSON.stringify(doc)}`)
+                    this.props.dispatch({type: "UPDATE_RESULT", result: doc})
+                    this.props.navigation.navigate("ResultsScreen");
+                }
+                )
+                .catch(err => {
+                    console.log(`Error! ${err}`);
+                    this.props.dispatch({type: "RESULT_FAILURE"})
+                    this.props.navigation.navigate("ResultsScreen");
+                }) 
+             //end server communication
             }
         })
     }
