@@ -62,9 +62,17 @@ const serverResponseReducer = (state=initialState.result, action) => {
             return action.result
 
         case "RESULT_ERROR":
-            console.log(action.payload.message)
-            console.log(typeof action.payload.message)
-            return action.payload.message
+            console.log("got an error")
+            if (action.payload.message) {
+                console.log(action.payload.message)
+                console.log(typeof action.payload.message)
+                return action.payload.message
+            }
+
+            else {
+                return action.payload
+            }
+            
 
         case "HARDCODE_SUCCESS":
             return hardCodedResult

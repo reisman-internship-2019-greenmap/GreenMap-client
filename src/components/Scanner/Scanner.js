@@ -81,10 +81,11 @@ class ScannerScreen extends Component {
             //once the scanning function is shut off, talk to the server
             getProductInfo(this.props.barcodeData)
             .then((res) => {
-                if (res === "the connection timed out") {
+                if (res === "The connection timed out") {
+                    console.log("dispatching result error")
                     this.props.dispatch({type: "RESULT_ERROR", payload: res})
                 }
-                console.log(`res is ${res}`)
+                console.log(`insice scanner.js, res is ${res}`)
                 this.props.dispatch({type: "UPDATE_RESULT", result: res})
             })
             .catch((err) => {
