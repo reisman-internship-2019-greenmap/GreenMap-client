@@ -63,12 +63,16 @@ const serverResponseReducer = (state=initialState.result, action) => {
 
         case "RESULT_ERROR":
             console.log("got an error")
+            // when the server returns a response but that
+            // response indicates an error, the action's payload
+            // is an Error object
             if (action.payload.message) {
                 console.log(action.payload.message)
                 console.log(typeof action.payload.message)
                 return action.payload.message
             }
-
+            // when the connection times out, the action's
+            // payload is a string saying "The connection timed out"
             else {
                 return action.payload
             }
