@@ -57,17 +57,22 @@ class ManualEntryForm extends Component {
             console.log(`The error is: ${this.state.barcodeError}`)
             if (this.state.barcodeError == null) {
                 getProductInfo(this.state.barcodeValue)
-                .then(doc => {
-                    console.log(`doc is ${JSON.stringify(doc)}`)
-                    this.props.dispatch({type: "UPDATE_RESULT", result: doc})
-                    this.props.navigation.navigate("ResultsScreen");
+                .then(res => {
+                    console.log(`res is ${JSON.stringify(doc)}`)
+                    if (res === "the connection timed out") {
+                        this.props.dispatch({type: "RESULT_FAILURE", payload: res})
+                    }
+
+                    else {
+                        this.props.dispatch({type: "UPDATE_RESULT", result: res})
+                    }
                 }
                 )
                 .catch(err => {
                     console.log(`Error! ${err}`);
-                    this.props.dispatch({type: "RESULT_FAILURE"})
-                    this.props.navigation.navigate("ResultsScreen");
+                    this.props.dispatch({type: "RESULT_FAILURE", payload: err})
                 }) 
+                this.props.navigation.navigate("ResultsScreen");
              //end server communication
             }
         })
