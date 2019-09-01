@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import {responsiveFontSize, responsiveWidth} from 'react-native-responsive-dimensions';
 import {ListItem, Avatar} from 'react-native-elements';
+import Snail from '../../Images/Snail.png'
+import EmptyResult from '../../Images/EmptyResult.png'
 
 
 
@@ -12,9 +14,17 @@ class ResultsView extends Component {
       return (
           <View style={{flex:1, justifyContent: "center"}}>
               { !isNaN(this.props.resultDoc) ? 
-              <ResultFailure statusCode={this.props.resultDoc}/> :
+              <ResultFailure 
+                statusCode={this.props.resultDoc}
+                errMessage={"We couldn't find enough information for that product."}
+                errIcon={EmptyResult}
+                /> :
               this.props.resultDoc === "The connection timed out" ?
-              <View><Text>The connection timed out</Text></View> :
+              <ResultFailure 
+                statusCode={501} 
+                errMessage="It looks like the connection timed out. Please check back later."
+                errIcon={Snail} 
+                /> :
               this.props.resultDoc === "none recieved yet" ?
               <View><Text style={styles.text}>Loading results</Text></View> :
               <ResultSuccess result={this.props.resultDoc} /> 
@@ -25,9 +35,17 @@ class ResultsView extends Component {
 
 const ResultFailure = (props) => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Oops!</Text>
-            <Text>The server returned a status code of {props.statusCode}</Text>
+        <View style={
+            {flex: 1, 
+            alignItems: "center", 
+            backgroundColor: "#EFEFEF"}}>
+            <Image source={props.errIcon} style={
+                {width: 150, 
+                height: 150, 
+                alignSelf: "center",
+                marginTop: 50}} />
+            <Text style={styles.oops}>Oops!</Text>
+            <Text style={styles.text}>{props.errMessage}</Text>
         </View>
     )
 }
@@ -127,6 +145,14 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         textAlign: 'center',
+    },
+
+    oops: {
+        fontSize: 30,
+        fontWeight: "bold",
+        textAlign: "center",
+        marginTop: 30,
+        marginBottom: 20
     },
 
     subView: {

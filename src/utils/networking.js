@@ -2,25 +2,24 @@ const fetch = require('node-fetch')
 
 const getProductInfo = (barcode) => {
 
-    // wraps the fetch call in a promise that resolves with
-    // a successful query (Status code is 200-299)
-    // Rejects if the status code is not 200-299
-
-    //var responsePromise = new Promise ((resolve, reject) => {
-    //    fetch(`https://greenmap.herokuapp.com/${barcode}`)
-    //        .then(res => {
-    //            if (!res.ok) throw Error(res.status)
-    //        return res.json()
-    //    }) //end .then()
-    //    .then(resJSON => {
-    //        console.log("The promise resolved")
-    //        resolve(resJSON)
-    //        }) //end then
-    //    .catch(err => {
-    //        console.log("The promise rejected")
-    //        reject(err)
-    //    })
-    //})
+     //wraps the fetch call in a promise that resolves with
+     //a successful query (Status code is 200-299)
+     //Rejects if the status code is not 200-29
+    var responsePromise = new Promise ((resolve, reject) => {
+        fetch(`https://greenmap.herokuapp.com/${barcode}`)
+            .then(res => {
+                if (!res.ok) throw Error(res.status)
+            return res.json()
+        }) //end .then()
+        .then(resJSON => {
+            console.log("The promise resolved")
+            resolve(resJSON)
+            }) //end then
+        .catch(err => {
+            console.log("The promise rejected")
+            reject(err)
+        })
+    })
 
     // A simple Prosmise that resolves after 5 seconds.
     // When passed to Promise.race, this promise will resolve
@@ -30,9 +29,9 @@ const getProductInfo = (barcode) => {
     })
 
     //for mocking a slow server - testing only
-    var dummySlowPromise = new Promise ((resolve) => {
-        setTimeout(resolve, 6000, "Dummy slow promise")
-    })
+    //var dummySlowPromise = new Promise ((resolve) => {
+    //    setTimeout(resolve, 6000, "Dummy slow promise")
+    //})
 
 
     /** The result could be one of three things:
@@ -47,6 +46,6 @@ const getProductInfo = (barcode) => {
      * the server responds with a success.
     */
 
-    return Promise.race([dummySlowPromise, connectionTimeoutPromise])
+    return Promise.race([responsePromise, connectionTimeoutPromise])
 }
 export default getProductInfo
