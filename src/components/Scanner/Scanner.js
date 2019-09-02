@@ -4,10 +4,22 @@ import {BarCodeScanner} from 'expo-barcode-scanner';
 import * as Permissions from 'expo-permissions';
 import {withNavigation} from 'react-navigation';
 
+//utility functions
 import {headerTitle} from '../NavigationHeader/NavigationHeader'
+import getProductInfo from '../../utils/networking'
 
+//styles
 import AppStyles from '../../globals/styles/AppStyle';
 import ScannerStyles from './ScannerStyles';
+
+//NOTE ABOUT REDUX:
+/*the onScan() function shouldn't have to manage
+the call tracker and barcode data through redux, 
+but the automatic repeative calls to that function 
+by the third-party scanner make it very difficult to
+direct onScan()'s flow via a local state. setState() will 
+not always finish before the next call, but the action 
+dispatches will.*/
 
 
 class ScannerScreen extends Component {
@@ -26,6 +38,8 @@ class ScannerScreen extends Component {
 
     }
     
+    // resets the scanner when screen is focused and
+    // shuts off the scanner when screen is blurred
     async componentDidMount() {
         this._requestCameraPermission();
         this.focusListener = this.props.navigation.addListener("willFocus", () => {
@@ -51,6 +65,7 @@ class ScannerScreen extends Component {
 
 
   _onScan = (scan) => {
+      // increases this.props.onScanCalls by 1
       this.props.dispatch({type: "UPDATE_CALL_TRACKER"});
       
       //set initial read
@@ -62,26 +77,24 @@ class ScannerScreen extends Component {
       //if this condition is met then the barcode is valid
       else if (this.props.onScanCalls == 5) {
         this.setState({onBarcodeScan: undefined}, () => {
-                //once the scanning function is shut off, talk to the server
-                fetch(`https://greenmap.herokuapp.com/0886111601387`)
-                .then((res) => {
-                    console.log(res)
-                    console.log(`The status code is ${res.status}`)
-                    return res.json()
-                })
-                .then((resJSON) => {
-                    if (!resJSON.doc) {
-                        this.props.dispatch({type: "RESULT_ERROR"});
-                    }
-                    else {
-                        console.log(resJSON.doc)
-                        this.props.dispatch({type: "UPDATE_RESULT", result: resJSON.doc});
-                    }
-                })
-                .catch(error => console.log('Error: ', error)) 
-                //end server communication
+            console.log("setState callback")
+            //once the scanning function is shut off, talk to the server
+            getProductInfo(this.props.barcodeData)
+            .then((res) => {
+                if (res === "The connection timed out") {
+                    console.log("dispatching result error")
+                    this.props.dispatch({type: "RESULT_ERROR", payload: res})
+                }
+                console.log(`insice scanner.js, res is ${res}`)
+                this.props.dispatch({type: "UPDATE_RESULT", result: res})
+            })
+            .catch((err) => {
+                console.log(`in scanner, err is ${err}`)
+                this.props.dispatch({type: "RESULT_ERROR", payload: err})
+            })
+            //no matter what the response, navigate to results
             this.props.navigation.navigate("ResultsScreen");
-            }) //end setState callback
+        }) //end setState callback
         return
       } //end else if
 
@@ -95,7 +108,7 @@ class ScannerScreen extends Component {
       }
       
       console.log(`barcodeData: ${this.props.barcodeData}`);
-}
+  }
     
   goToForm = () => {
       this.props.navigation.navigate("FormScreen");

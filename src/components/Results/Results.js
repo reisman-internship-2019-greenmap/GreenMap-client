@@ -1,93 +1,94 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import {responsiveFontSize, responsiveWidth} from 'react-native-responsive-dimensions';
 import {ListItem, Avatar} from 'react-native-elements';
-import {PropTypes} from 'prop-types';
+import Snail from '../../Images/Snail.png'
+import EmptyResult from '../../Images/EmptyResult.png'
 
 
 
-var topThree = [
-    {
-      id: "randomstring1",
-      product: "Toshiba AbC 123",
-      avTitle: "Ts",
-      manufacturer: "Toshiba",
-      esg: 9.87
-    },
-    {
-      id: "randomstring2",
-      product: "Acer D45 Pro",
-      avTitle: "Ac",
-      manufacturer: "Acer",
-      esg: 6.54
-    },
-    {
-      id: "randomstring3",
-      product: "Macbook",
-      avTitle: "Ap",
-      manufacturer: "Apple",
-      esg: 3.21
-    },
-    {
-        id: "randomstring4",
-        product: "Toshiba AbC 123",
-        avTitle: "Ts",
-        manufacturer: "Toshiba",
-        esg: 9.87
-      },
-      {
-        id: "randomstring5",
-        product: "Acer D45 Pro",
-        avTitle: "Ac",
-        manufacturer: "Acer",
-        esg: 6.54
-      },
-      {
-        id: "randomstring6",
-        product: "Macbook",
-        avTitle: "Ap",
-        manufacturer: "Apple",
-        esg: 3.21
-      }
-  ]
 
-// If the server hasn't responded yet, resultDoc is undefined
-// If the server has responded with an error, resultDoc contains
-//      a single field called "name" which is set to "undefined"
-// If the server has responded with a success, resultDoc contains
-//      the response data
-// I know this is confusing garbage, this component and its reducer
-// will be re-factored at some point
 class ResultsView extends Component {
   render() {
+      console.log(`In results and result is ${this.props.resultDoc}`)
       return (
           <View style={{flex:1, justifyContent: "center"}}>
-              {this.props.resultDoc ? <ResultHandler result={this.props.resultDoc}/> :
-          <Text style={styles.text}>Loading Results</Text>}
-          </View>
+              { !isNaN(this.props.resultDoc) ? 
+              <ResultFailure 
+                statusCode={this.props.resultDoc}
+                errMessage={"We couldn't find enough information for that product."}
+                errIcon={EmptyResult}
+                /> :
+              this.props.resultDoc === "The connection timed out" ?
+              <ResultFailure 
+                statusCode={501} 
+                errMessage="It looks like the connection timed out. Please check back later."
+                errIcon={Snail} 
+                /> :
+              this.props.resultDoc === "none recieved yet" ?
+              <View><Text style={styles.text}>Loading results</Text></View> :
+              <ResultSuccess result={this.props.resultDoc} /> 
+              }
+            </View>
       )}
 }
 
-class ResultHandler extends Component {
-    static propTypes = {
-        result: PropTypes.object.isRequired
-    }
-
-    render() {
-        return (
-        <View style={styles.container}>
-            {this.props.result.name == "undefined" ? <ResultFailure /> :
-          <ResultSuccess result={this.props.result} /> }
+const ResultFailure = (props) => {
+    return (
+        <View style={
+            {flex: 1, 
+            alignItems: "center", 
+            backgroundColor: "#EFEFEF"}}>
+            <Image source={props.errIcon} style={
+                {width: 150, 
+                height: 150, 
+                alignSelf: "center",
+                marginTop: 50}} />
+            <Text style={styles.oops}>Oops!</Text>
+            <Text style={styles.text}>{props.errMessage}</Text>
         </View>
-    )}
+    )
 }
 
-class ResultSuccess extends Component {
-    static propTypes = {
-        result: PropTypes.object.isRequired
-    }
-
-    renderTopThree = ({item}) => {
+const ResultSuccess = (props) => {
+    var topThree = [
+        {
+          id: "randomstring1",
+          product: "Toshiba AbC 123",
+          avTitle: "Ts",
+          manufacturer: "Toshiba",
+          esg: 9.87
+        },
+        {
+          id: "randomstring2",
+          product: "Acer D45 Pro",
+          avTitle: "Ac",
+          manufacturer: "Acer",
+          esg: 6.54
+        },
+        {
+          id: "randomstring3",
+          product: "Macbook",
+          avTitle: "Ap",
+          manufacturer: "Apple",
+          esg: 3.21
+        },
+        {
+            id: "randomstring4",
+            product: "Toshiba AbC 123",
+            avTitle: "Ts",
+            manufacturer: "Toshiba",
+            esg: 9.87
+          },
+          {
+            id: "randomstring5",
+            product: "Acer D45 Pro",
+            avTitle: "Ac",
+            manufacturer: "Acer",
+            esg: 6.54
+        }
+    ]
+    const renderTopThree = ({item}) => {
         return (
             <ListItem
               containerStyle={{backgroundColor: "#EFEFEF"}}
@@ -97,51 +98,38 @@ class ResultSuccess extends Component {
               subtitle={ `${item.manufacturer}` }
               />
           )
-    }
+    } //end renderTopThree
 
-    renderItemSeparator = () => (
+    const renderItemSeparator = () => (
         <View
             style={{
                 backgroundColor: "white",
                 height: 1
             }}
         />
+    ) //end renderItemSeperator
+
+    const _keyExtractor = (item, index) => item.id;
+
+    return (
+        <View style={styles.subView}>
+            {props.result.doc.ESG !== null ? 
+             <Text style={styles.mainRes}>{props.result.doc.ESG}</Text> :
+             <Text style={styles.notFound}>ESG not found</Text>}
+            <Text style={styles.usrProduct}>{props.result.doc.name}</Text>
+            <Text style={[styles.mainRes, styles.listHeading]}>
+                Top in this category
+            </Text>
+            <FlatList
+            style={styles.topThreeList} 
+            data={topThree}
+            renderItem={renderTopThree}
+            keyExtractor={_keyExtractor}
+            ItemSeparatorComponent={renderItemSeparator}
+            />
+        </View>
     )
-
-    /**
-     * @helper
-     * _keyExtractor tells the FlatList component which field
-     * of the result should serve as a unique identifier */
-    _keyExtractor = (item, index) => item.id;
-
-    render() {
-        return (
-            <View style={styles.subView}>
-                <Text style={styles.mainRes}>1.75</Text>
-                <Text style={styles.usrProduct}>{this.props.result.name}</Text>
-                <Text style={[styles.mainRes, styles.listHeading]}>
-                    Top in this category
-                </Text>
-                <FlatList
-                style={styles.topThreeList} 
-                data={topThree}
-                renderItem={this.renderTopThree}
-                keyExtractor={this._keyExtractor}
-                ItemSeparatorComponent={this.renderItemSeparator}
-                />
-            </View>
-        )}
-}
-
-class ResultFailure extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.text}>No results returned</Text>
-            </View>
-        )
-    }
-}
+} //end ResultSuccess
 
 export default ResultsView 
 
@@ -159,6 +147,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
+    oops: {
+        fontSize: 30,
+        fontWeight: "bold",
+        textAlign: "center",
+        marginTop: 30,
+        marginBottom: 20
+    },
+
     subView: {
         position: "relative",
         padding: 20,
@@ -168,6 +164,13 @@ const styles = StyleSheet.create({
         fontSize: responsiveFontSize(10),
         fontFamily: "Raleway-Extra-Bold",
         color: "#58B34D",
+        paddingBottom: 10,
+    },
+
+    notFound: {
+        fontSize: responsiveFontSize(5),
+        fontFamily: "Raleway-Extra-Bold",
+        color: "#E24747",
         paddingBottom: 10,
     },
     
