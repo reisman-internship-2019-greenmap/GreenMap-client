@@ -1,7 +1,6 @@
 const fetch = require('node-fetch')
 
 const getProductInfo = (barcode) => {
-
      //wraps the fetch call in a promise that resolves with
      //a successful query (Status code is 200-299)
      //Rejects if the status code is not 200-29
@@ -12,7 +11,6 @@ const getProductInfo = (barcode) => {
             return res.json()
         }) //end .then()
         .then(resJSON => {
-            console.log("The promise resolved")
             resolve(resJSON)
             }) //end then
         .catch(err => {
@@ -25,13 +23,8 @@ const getProductInfo = (barcode) => {
     // When passed to Promise.race, this promise will resolve
     // if the server does not send a response within 5 seconds.
     var connectionTimeoutPromise = new Promise ((reject) => {
-        setTimeout(reject, 5000, "The connection timed out")
+        setTimeout(reject, 10000, "The connection timed out")
     })
-
-    //for mocking a slow server - testing only
-    //var dummySlowPromise = new Promise ((resolve) => {
-    //    setTimeout(resolve, 6000, "Dummy slow promise")
-    //})
 
 
     /** The result could be one of three things:
@@ -48,4 +41,34 @@ const getProductInfo = (barcode) => {
 
     return Promise.race([responsePromise, connectionTimeoutPromise])
 }
-export default getProductInfo
+
+const getTopFive = (barcode) => {
+    console.log('getTopFive was called')
+    var responsePromise = new Promise ((resolve, reject) => {
+        fetch(`https://greenmap.herokuapp.com/products/${barcode}`)
+        .then(res => {
+            if (!res.ok) throw Error(res.status)
+            return res.json()
+        })
+        .then(resJSON => {
+            console.log(`Result from the second endpoint is ${JSON.stringify(resJSON)}`)
+            resolve(resJSON)
+        })
+        .catch(err => {
+            console.log(`Error at second endpoint: ${err}`)
+            reject(err)
+        })
+    })
+
+    // A simple Prosmise that resolves after 5 seconds.
+    // When passed to Promise.race, this promise will resolve
+    // if the server does not send a response within 5 seconds.
+    var connectionTimeoutPromise = new Promise ((reject) => {
+        setTimeout(reject, 10000, "The connection timed out")
+    })
+
+    return Promise.race([responsePromise, connectionTimeoutPromise])
+
+}
+
+export {getProductInfo, getTopFive}

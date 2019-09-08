@@ -12,7 +12,7 @@ import AppStyles from '../../globals/styles/AppStyle';
 import FormStyles from './FormStyles';
 
 import {Ionicons} from '@expo/vector-icons'
-import getProductInfo from '../../utils/networking';
+import {getProductInfo, getTopFive } from '../../utils/networking';
 
 
 
@@ -56,23 +56,37 @@ class ManualEntryForm extends Component {
         this.setState({barcodeError: error}, () => {
             if (this.state.barcodeError == null) {
                 getProductInfo(this.state.barcodeValue)
-                .then(res => {
-                    console.log(`res is ${JSON.stringify(res)}`)
-                    if (res === "The connection timed out") {
-                        this.props.dispatch({type: "RESULT_FAILURE", payload: res})
+                .then(getProductRes => {
+                    if (getProductRes === "The connection timed out") {
+                        this.props.dispatch({type: "RESULT_ERROR", payload: getProductRes})
                     }
 
                     else {
-                        this.props.dispatch({type: "UPDATE_RESULT", result: res})
+                        getTopFive(this.state.barcodeValue)
+                        .then(topFiveRes => {
+        
+                            //compose final response object here
+                            finalRes = {
+                                "name": getProductRes.doc.name,
+                                "ESG": getProductRes.doc.ESG,
+                                "topFive": topFiveRes.docs,
+                                "category": topFiveRes.category
+                            }
+                            //then send it to store
+                            console.log("Line before dispatch in form")
+                            this.props.dispatch({type: "RESULT_SUCCESS", result: finalRes})
+                        })  
                     }
-                }
-                )
+                })
                 .catch(err => {
-                    console.log(`Error! ${err}`);
-                    this.props.dispatch({type: "RESULT_FAILURE", payload: err})
-                }) 
+                    this.props.dispatch({type: "RESULT_ERROR", payload: err})
+                })
+                
+                // this line will execute before server Promises resolve/reject.
+                // the result component will re-render when its state
+                // is updated via redux, which happens when the Promises
+                // above resolve or reject.
                 this.props.navigation.navigate("ResultsScreen");
-             //end server communication
             }
         })
     }

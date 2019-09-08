@@ -5,8 +5,8 @@ import * as Permissions from 'expo-permissions';
 import {withNavigation} from 'react-navigation';
 
 //utility functions
-import {headerTitle} from '../NavigationHeader/NavigationHeader'
-import getProductInfo from '../../utils/networking'
+import {headerTitle} from '../NavigationHeader/NavigationHeader';
+import {getProductInfo, getTopFive} from '../../utils/networking';
 
 //styles
 import AppStyles from '../../globals/styles/AppStyle';
@@ -80,16 +80,35 @@ class ScannerScreen extends Component {
             console.log("setState callback")
             //once the scanning function is shut off, talk to the server
             getProductInfo(this.props.barcodeData)
-            .then((res) => {
-                if (res === "The connection timed out") {
-                    console.log("dispatching result error")
+            .then(getProductRes => {
+
+                //the connection time out is not registered as an
+                //error...has something to do with how Promise.race
+                //works I think
+                if (getProductRes === "The connection timed out") {
                     this.props.dispatch({type: "RESULT_ERROR", payload: res})
                 }
-                console.log(`insice scanner.js, res is ${res}`)
-                this.props.dispatch({type: "UPDATE_RESULT", result: res})
+                
+                else {
+                    getTopFive(this.state.barcodeData)
+                    .then(topFiveRes => {
+
+                        //compose the object to send to
+                        //the results component
+                        finalRes = {
+                            "name": getProductRes.doc.name,
+                            "ESG": getProductRes.doc.ESG,
+                            "topFive": topFiveRes.docs,
+                            "category": topFiveRes.category
+                        }
+
+                        //send it up through the store
+                        this.props.dispatch({type: "RESULT_SUCCESS", result: finalRes})
+
+                    })
+                }
             })
             .catch((err) => {
-                console.log(`in scanner, err is ${err}`)
                 this.props.dispatch({type: "RESULT_ERROR", payload: err})
             })
             //no matter what the response, navigate to results

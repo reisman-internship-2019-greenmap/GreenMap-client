@@ -10,30 +10,35 @@ import EmptyResult from '../../Images/EmptyResult.png'
 
 class ResultsView extends Component {
   render() {
-      console.log(`In results and result is ${this.props.resultDoc}`)
+      // first checks if result is a number, indicating a server error
+      // then checks for connection timeout message
+      // third, checks if server has even responded yet
+      // finally, if all checks pass, renders results
+      console.log(`In results and result is ${this.props.result}`)
       return (
-          <View style={{flex:1, justifyContent: "center"}}>
-              { !isNaN(this.props.resultDoc) ? 
+          <View style={{flex:1}}>
+              { !isNaN(this.props.result) ? 
               <ResultFailure 
-                statusCode={this.props.resultDoc}
+                statusCode={this.props.result}
                 errMessage={"We couldn't find enough information for that product."}
                 errIcon={EmptyResult}
                 /> :
-              this.props.resultDoc === "The connection timed out" ?
+              this.props.result === "The connection timed out" ?
               <ResultFailure 
                 statusCode={501} 
                 errMessage="It looks like the connection timed out. Please check back later."
                 errIcon={Snail} 
                 /> :
-              this.props.resultDoc === "none recieved yet" ?
+              this.props.result === "none recieved yet" ?
               <View><Text style={styles.text}>Loading results</Text></View> :
-              <ResultSuccess result={this.props.resultDoc} /> 
+              <ResultSuccess result={this.props.result} /> 
               }
             </View>
       )}
 }
 
 const ResultFailure = (props) => {
+    console.log()
     return (
         <View style={
             {flex: 1, 
@@ -51,51 +56,20 @@ const ResultFailure = (props) => {
 }
 
 const ResultSuccess = (props) => {
-    var topThree = [
-        {
-          id: "randomstring1",
-          product: "Toshiba AbC 123",
-          avTitle: "Ts",
-          manufacturer: "Toshiba",
-          esg: 9.87
-        },
-        {
-          id: "randomstring2",
-          product: "Acer D45 Pro",
-          avTitle: "Ac",
-          manufacturer: "Acer",
-          esg: 6.54
-        },
-        {
-          id: "randomstring3",
-          product: "Macbook",
-          avTitle: "Ap",
-          manufacturer: "Apple",
-          esg: 3.21
-        },
-        {
-            id: "randomstring4",
-            product: "Toshiba AbC 123",
-            avTitle: "Ts",
-            manufacturer: "Toshiba",
-            esg: 9.87
-          },
-          {
-            id: "randomstring5",
-            product: "Acer D45 Pro",
-            avTitle: "Ac",
-            manufacturer: "Acer",
-            esg: 6.54
-        }
-    ]
-    const renderTopThree = ({item}) => {
+    console.log(`the props to resultSuccess is ${JSON.stringify(props)}`)
+    
+    const renderTopManus = ({item}) => {
         return (
             <ListItem
               containerStyle={{backgroundColor: "#EFEFEF"}}
-              id={item.id}
-              leftAvatar={<Avatar size={"medium"} title={item.avTitle} activeOpacity={0.7}/>}
-              title={item.product}
-              subtitle={ `${item.manufacturer}` }
+              id={item.Company}
+              title={`Company: ${item.Company}`}
+              subtitle={
+                  <View style={{flexDirection: "row"}}>
+                      <Text style={styles.subtitle}>Greenscore: </Text>
+                      <Text style={styles.greenscore}>{item.greenscore}</Text>
+                  </View>
+              }
               />
           )
     } //end renderTopThree
@@ -109,21 +83,21 @@ const ResultSuccess = (props) => {
         />
     ) //end renderItemSeperator
 
-    const _keyExtractor = (item, index) => item.id;
+    const _keyExtractor = (item, index) => item.Company
 
     return (
         <View style={styles.subView}>
-            {props.result.doc.ESG !== null ? 
-             <Text style={styles.mainRes}>{props.result.doc.ESG}</Text> :
+            {props.result.ESG !== null ? 
+             <Text style={styles.mainRes}>{props.result.ESG}</Text> :
              <Text style={styles.notFound}>ESG not found</Text>}
-            <Text style={styles.usrProduct}>{props.result.doc.name}</Text>
+            <Text style={styles.usrProduct}>{props.result.name}</Text>
             <Text style={[styles.mainRes, styles.listHeading]}>
-                Top in this category
+                Top in category: {props.result.category}
             </Text>
             <FlatList
-            style={styles.topThreeList} 
-            data={topThree}
-            renderItem={renderTopThree}
+            style={styles.topManuList} 
+            data={props.result.topFive}
+            renderItem={renderTopManus}
             keyExtractor={_keyExtractor}
             ItemSeparatorComponent={renderItemSeparator}
             />
@@ -147,6 +121,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
+    subtitle: {
+        fontSize: 18
+    },
+
+
     oops: {
         fontSize: 30,
         fontWeight: "bold",
@@ -167,6 +146,12 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
 
+    greenscore: {
+        fontSize: 20,
+        color: "#58B34D",
+        fontFamily: "Raleway-Extra-Bold"
+    },
+
     notFound: {
         fontSize: responsiveFontSize(5),
         fontFamily: "Raleway-Extra-Bold",
@@ -185,7 +170,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
       },
     
-    topThreeList: {
+    topManuList: {
         width: responsiveWidth(90)
     },
 
