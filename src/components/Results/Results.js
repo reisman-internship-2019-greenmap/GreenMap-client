@@ -16,7 +16,7 @@ class ResultsView extends Component {
       // finally, if all checks pass, renders results
       console.log(`In results and result is ${this.props.result}`)
       return (
-          <View style={{flex:1, justifyContent: "center"}}>
+          <View style={{flex:1}}>
               { !isNaN(this.props.result) ? 
               <ResultFailure 
                 statusCode={this.props.result}
@@ -57,51 +57,19 @@ const ResultFailure = (props) => {
 
 const ResultSuccess = (props) => {
     console.log(`the props to resultSuccess is ${JSON.stringify(props)}`)
-    var topThree = [
-        {
-          id: "randomstring1",
-          product: "Toshiba AbC 123",
-          avTitle: "Ts",
-          manufacturer: "Toshiba",
-          esg: 9.87
-        },
-        {
-          id: "randomstring2",
-          product: "Acer D45 Pro",
-          avTitle: "Ac",
-          manufacturer: "Acer",
-          esg: 6.54
-        },
-        {
-          id: "randomstring3",
-          product: "Macbook",
-          avTitle: "Ap",
-          manufacturer: "Apple",
-          esg: 3.21
-        },
-        {
-            id: "randomstring4",
-            product: "Toshiba AbC 123",
-            avTitle: "Ts",
-            manufacturer: "Toshiba",
-            esg: 9.87
-          },
-          {
-            id: "randomstring5",
-            product: "Acer D45 Pro",
-            avTitle: "Ac",
-            manufacturer: "Acer",
-            esg: 6.54
-        }
-    ]
-    const renderTopThree = ({item}) => {
+    
+    const renderTopManus = ({item}) => {
         return (
             <ListItem
               containerStyle={{backgroundColor: "#EFEFEF"}}
-              id={item.id}
-              leftAvatar={<Avatar size={"medium"} title={item.avTitle} activeOpacity={0.7}/>}
-              title={item.product}
-              subtitle={ `${item.manufacturer}` }
+              id={item.Company}
+              title={`Company: ${item.Company}`}
+              subtitle={
+                  <View style={{flexDirection: "row"}}>
+                      <Text style={styles.subtitle}>Greenscore: </Text>
+                      <Text style={styles.greenscore}>{item.greenscore}</Text>
+                  </View>
+              }
               />
           )
     } //end renderTopThree
@@ -115,7 +83,7 @@ const ResultSuccess = (props) => {
         />
     ) //end renderItemSeperator
 
-    const _keyExtractor = (item, index) => item.id;
+    const _keyExtractor = (item, index) => item.Company
 
     return (
         <View style={styles.subView}>
@@ -127,9 +95,9 @@ const ResultSuccess = (props) => {
                 Top in category: {props.result.category}
             </Text>
             <FlatList
-            style={styles.topThreeList} 
-            data={topThree}
-            renderItem={renderTopThree}
+            style={styles.topManuList} 
+            data={props.result.topFive}
+            renderItem={renderTopManus}
             keyExtractor={_keyExtractor}
             ItemSeparatorComponent={renderItemSeparator}
             />
@@ -153,6 +121,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
+    subtitle: {
+        fontSize: 18
+    },
+
+
     oops: {
         fontSize: 30,
         fontWeight: "bold",
@@ -173,6 +146,12 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
 
+    greenscore: {
+        fontSize: 20,
+        color: "#58B34D",
+        fontFamily: "Raleway-Extra-Bold"
+    },
+
     notFound: {
         fontSize: responsiveFontSize(5),
         fontFamily: "Raleway-Extra-Bold",
@@ -191,7 +170,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
       },
     
-    topThreeList: {
+    topManuList: {
         width: responsiveWidth(90)
     },
 

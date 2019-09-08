@@ -81,9 +81,12 @@ class ManualEntryForm extends Component {
                 .catch(err => {
                     this.props.dispatch({type: "RESULT_ERROR", payload: err})
                 })
-                console.log("Line before results navigation") 
+                
+                // this line will execute before server Promises resolve/reject.
+                // the result component will re-render when its state
+                // is updated via redux, which happens when the Promises
+                // above resolve or reject.
                 this.props.navigation.navigate("ResultsScreen");
-             //end server communication
             }
         })
     }
