@@ -57,26 +57,28 @@ class ManualEntryForm extends Component {
             if (this.state.barcodeError == null) {
                 getProductInfo(this.state.barcodeValue)
                 .then(getProductRes => {
-                    console.log(`Form.js: getProductRes is ${JSON.stringify(getProductRes)}`)
                     if (getProductRes === "The connection timed out") {
-                        console.log("Line inside if connection timed out")
                         this.props.dispatch({type: "RESULT_ERROR", payload: getProductRes})
                     }
 
                     else {
-                        console.log("Line before getTopFive")
                         getTopFive(this.state.barcodeValue)
                         .then(topFiveRes => {
-                            console.log(`Form.js: got ${topFiveRes} from second endpoint`)
-                            console.log(`First res is still ${getProductRes}`)
+        
                             //compose final response object here
+                            finalRes = {
+                                "name": getProductRes.doc.name,
+                                "ESG": getProductRes.doc.ESG,
+                                "topFive": topFiveRes.docs,
+                                "category": topFiveRes.category
+                            }
                             //then send it to store
-                            this.props.dispatch({type: "UPDATE_RESULT", result: getProductRes})
+                            console.log("Line before dispatch in form")
+                            this.props.dispatch({type: "RESULT_SUCCESS", result: finalRes})
                         })  
                     }
                 })
                 .catch(err => {
-                    console.log(`Form.js: Error! ${err}`);
                     this.props.dispatch({type: "RESULT_ERROR", payload: err})
                 })
                 console.log("Line before results navigation") 

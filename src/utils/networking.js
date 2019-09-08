@@ -11,7 +11,6 @@ const getProductInfo = (barcode) => {
             return res.json()
         }) //end .then()
         .then(resJSON => {
-            console.log(`Result from first endpoint is ${JSON.stringify(resJSON)}`)
             resolve(resJSON)
             }) //end then
         .catch(err => {

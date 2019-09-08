@@ -10,30 +10,35 @@ import EmptyResult from '../../Images/EmptyResult.png'
 
 class ResultsView extends Component {
   render() {
-      console.log(`In results and result is ${this.props.resultDoc}`)
+      // first checks if result is a number, indicating a server error
+      // then checks for connection timeout message
+      // third, checks if server has even responded yet
+      // finally, if all checks pass, renders results
+      console.log(`In results and result is ${this.props.result}`)
       return (
           <View style={{flex:1, justifyContent: "center"}}>
-              { !isNaN(this.props.resultDoc) ? 
+              { !isNaN(this.props.result) ? 
               <ResultFailure 
-                statusCode={this.props.resultDoc}
+                statusCode={this.props.result}
                 errMessage={"We couldn't find enough information for that product."}
                 errIcon={EmptyResult}
                 /> :
-              this.props.resultDoc === "The connection timed out" ?
+              this.props.result === "The connection timed out" ?
               <ResultFailure 
                 statusCode={501} 
                 errMessage="It looks like the connection timed out. Please check back later."
                 errIcon={Snail} 
                 /> :
-              this.props.resultDoc === "none recieved yet" ?
+              this.props.result === "none recieved yet" ?
               <View><Text style={styles.text}>Loading results</Text></View> :
-              <ResultSuccess result={this.props.resultDoc} /> 
+              <ResultSuccess result={this.props.result} /> 
               }
             </View>
       )}
 }
 
 const ResultFailure = (props) => {
+    console.log()
     return (
         <View style={
             {flex: 1, 
@@ -51,6 +56,7 @@ const ResultFailure = (props) => {
 }
 
 const ResultSuccess = (props) => {
+    console.log(`the props to resultSuccess is ${JSON.stringify(props)}`)
     var topThree = [
         {
           id: "randomstring1",
@@ -113,12 +119,12 @@ const ResultSuccess = (props) => {
 
     return (
         <View style={styles.subView}>
-            {props.result.doc.ESG !== null ? 
-             <Text style={styles.mainRes}>{props.result.doc.ESG}</Text> :
+            {props.result.ESG !== null ? 
+             <Text style={styles.mainRes}>{props.result.ESG}</Text> :
              <Text style={styles.notFound}>ESG not found</Text>}
-            <Text style={styles.usrProduct}>{props.result.doc.name}</Text>
+            <Text style={styles.usrProduct}>{props.result.name}</Text>
             <Text style={[styles.mainRes, styles.listHeading]}>
-                Top in this category
+                Top in category: {props.result.category}
             </Text>
             <FlatList
             style={styles.topThreeList} 

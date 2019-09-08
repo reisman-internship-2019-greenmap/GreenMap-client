@@ -55,8 +55,8 @@ const hardCodedResult = {
 
 const serverResponseReducer = (state=initialState.result, action) => {
     switch (action.type) {
-        case "UPDATE_RESULT":
-            console.log("got a result")
+        case "RESULT_SUCCESS":
+            console.log("Result reducer: got a result")
             console.log(`and that result is ${action.result}`)
             //returns the contents of "doc" from the server
             return action.result
@@ -86,9 +86,11 @@ const serverResponseReducer = (state=initialState.result, action) => {
     }
 }
 
+//I thought this reducer would be more complicated, 
+//this wrapping isn't actually necessary :-)
 const ResultReducer = (state=initialState, action) => {
     switch(action.type) {
-        case "UPDATE_RESULT":
+        case "RESULT_SUCCESS":
             return{...state, result: serverResponseReducer(state.result, action)}
 
         case "RESULT_ERROR":
