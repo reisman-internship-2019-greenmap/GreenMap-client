@@ -12,88 +12,108 @@ const talkToServer = (barcode, getManufacturers=false, productInfo=null) => {
     console.log(`networking.js - the full URL is ${fullURL}`)
 
     //talk to the server
-    var result = new Promise ((resolve, reject) => {
-        console.log(`networking.js - Fetching...`)
-        fetch(fullURL)
-        .then(res => {
+    //var result = new Promise ((resolve, reject) => {
+    //    console.log(`networking.js - Fetching...`)
+    //    fetch(fullURL)
+    //    .then(res => {
+//
+    //        // if there's a server error, reject the
+    //        // Promise and pass along the server's status code
+    //        if (!res.ok) {
+    //            console.log(`networking.js - rejecting result Promise with ${res.status}`)
+    //            reject(res.status)
+    //        }
+    //        console.log(`networking.js - returning res.json()`)
+    //        return res.json()
+    //    })
+    //    .then(resJSON => {
+    //        /*
+    //        * if productInfo is not defined,
+    //        * that means we're GETing from the first endpoint,
+    //        * which returns it. So, we return productInfo to
+    //        * getProductsAndManufacturers, which then passes
+    //        * it back in its second call to this function
+    //        * (talkToServer). This allows us to compose the 
+    //        * final result object to return to the scanner/form 
+    //        * component. The scanner/form then sends that object 
+    //        * up to the redux store, where it can be read by 
+    //        * the result component. 
+    //        */
+    //        console.log(`networking.js - resolving Promise with resJSON`)
+    //        if (!productInfo) resolve(resJSON)
+    //        else {
+    //            console.log(`networking.js - building final result...`)
+    //            //combine the results from the two endpoints
+    //            result = {
+    //                "name": productInfo.name,
+    //                "category": resJSON.category,
+    //                "ESG": productInfo.ESG,
+    //                "topFive": resJSON.topFive
+    //            }
+//
+    //            //resolve the Promise with the composed result
+    //            console.log(`resolving with final result...`)
+    //            resolve(result)
+    //        } //end else
+    //    }) //end .then
+//
+    //    //catch any errors and reject the Promise
+    //    .catch(err => {
+    //        console.log(`networking.js - rejecting Promise with ${err}`)
+    //        reject(err)
+    //    })
+    //}) //end Promise
 
-            // if there's a server error, reject the
-            // Promise and pass along the server's status code
-            if (!res.ok) {
-                console.log(`networking.js - rejecting result Promise with ${res.status}`)
-                reject(res.status)
-            }
-            console.log(`networking.js - returning res.json()`)
-            return res.json()
-        })
-        .then(resJSON => {
-            /*
-            * if productInfo is not defined,
-            * that means we're GETing from the first endpoint,
-            * which returns it. So, we return productInfo to
-            * getProductsAndManufacturers, which then passes
-            * it back in its second call to this function
-            * (talkToServer). This allows us to compose the 
-            * final result object to return to the scanner/form 
-            * component. The scanner/form then sends that object 
-            * up to the redux store, where it can be read by 
-            * the result component. 
-            */
-            console.log(`networking.js - resolving Promise with resJSON`)
-            if (!productInfo) resolve(resJSON)
-            else {
-                console.log(`networking.js - building final result...`)
-                //combine the results from the two endpoints
-                result = {
-                    "name": productInfo.name,
-                    "category": resJSON.category,
-                    "ESG": productInfo.ESG,
-                    "topFive": resJSON.topFive
-                }
-
-                //resolve the Promise with the composed result
-                console.log(`resolving with final result...`)
-                resolve(result)
-            } //end else
-        }) //end .then
-
-        //catch any errors and reject the Promise
-        .catch(err => {
-            console.log(`networking.js - rejecting Promise with ${err}`)
-            reject(err)
-        })
-    }) //end Promise
+    var slow = new Promise ((resolve) => {
+        setTimeout(resolve, 6000, "I resolved")
+    })
 
     
     // A simple Prosmise that rejects after 5 seconds.
     // Promise.race() will return the error defined here
     // If the server goes not respond within 5 seconds.
     var connectionTimeout = new Promise ((reject) => {
-        setTimeout(reject, 5000, Error("The connection timed out"))
+        setTimeout(reject, 5000, {error: "The connection timed out"})
     })
 
     //put a Promise.race() here
-    return Promise.race([result, connectionTimeout])
+    return Promise.race([slow, connectionTimeout])
 
 } //end func
 
 const getProductAndManufacturers = (barcode) => {
     return new Promise((resolve, reject) => {
-        //first call gets the barcode info
         console.log(`GPAM - first talkToServer call`)
+
+        //GET roduct info
         talkToServer(barcode)
-        
-        //second call gets top 5 manufacturers
         .then(productInfo => {
-            console.log(`GPAM - secondTalkToServer call`)
-            talkToServer(barcode, getManufacturers=true, productInfo=productInfo)}
+            //check for errors
+            if (productInfo.error === "The connection timed out") {
+                console.log(`GPAM - returning error from first then`)
+                return productInfo.error
+            } 
+            
+            //if no errors, GET top manufacturers
+            else {
+                console.log(`GPAM - secondTalkToServer call`)
+                talkToServer(barcode, getManufacturers=true, productInfo=productInfo)}
+            }
+            
         )
 
-        //now we send the final result back to the scanner/form,
+        //now we send the final result or error back to the scanner/form,
         //which will dispatch an action to the redux store
         .then(result => {
-            console.log(`GPAM, resolving with result`);
-            resolve(result)
+            if (result === "The connection timed out") {
+                console.log(`GPAM - Rejecting promise with ${result}`)
+                reject(result)
+            }
+
+            else {
+                console.log(`GPAM, resolving with ${result}`);
+                resolve(result)
+            }
         })
 
         // catch any errors, re-throwing them with reject()
